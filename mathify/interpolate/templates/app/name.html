@@ -1,0 +1,70 @@
+<head>
+<script src="https://www.desmos.com/api/v0.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<link rel="icon" href="https://cdn3.iconfinder.com/data/icons/databases-2/512/function-512.png">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<title>MATHIFY</title>
+</head>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">MATHIFY</a>
+    </div>
+
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!-- <div id="loader" class="col-md-5 col-md-offset-4">
+        <h2><small>Please be patient while the equations load</small></h4>
+</div> -->
+
+
+<div class='container' style="padding-top:100px;">
+	<div id="main" class='row'>
+		<h2 class="col-md-10 col-md-offset-2" style="position:relative; left:4px;">Congratulations you mathified {{text}} <small><a href="/submit/" class="btn btn-primary" style="position:absolute;left:702px;">Try again</a></small></h2>
+			<div id="calculator"  class="col-md-5 col-md-offset-2"  style="width: 800px; height: 400px;"></div>
+			<div id="math_latex" class='row'>
+			</div>
+	<script>
+	var main = document.getElementById('main');
+	var elt = document.getElementById('calculator');
+	var calculator = Desmos.Calculator(elt, {expressions: false, settingsMenu: false, zoomButtons: false, border: true});
+	calculator.setMathBounds({left: -3500, right: 6500, bottom: -2000, top: 3000});
+	{% for l in letters %}
+		my_div = document.createElement('div');
+		my_div.innerHTML = '$$';
+		{% for c in l %}
+			calculator.setExpression({latex:"{{c}}", color:"#000000"});
+			var line = "{{c}}";
+			line = line.replace(/\.[^\(|^t]*/g, "");
+			my_div.innerHTML += line + "\\\\";
+		{% endfor %}
+		my_div.innerHTML += "$$";
+		main.appendChild(my_div);
+	{% endfor %}
+	</script>
+</div>
+</div>
+
+
+<script type="text/javascript">
+    $( "#loader" ).delay(2500).fadeOut(400, function(){
+    });
+
+</script>
