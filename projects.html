@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Andrew Carr</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+body, html {
+	/*max-width: 100%;*/
+	/*overflow-x: hidden;*/
+	height: 100%;
+	margin: 0;
+	font: 400 15px/1.8 "Lato", sans-serif;
+	color: #777;
+}
+
+.project {
+	border:1px solid black; 
+	padding:10px;
+	margin: 3px;
+
+}
+.project:hover {
+	background-color: #d7d7d7;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font: 20px "Lato", sans-serif;
+  color: #111;
+}
+h2 {
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font: 25px "Lato", sans-serif;
+  color: #111;
+}
+</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="font: 17px 'Lato', sans-serif;" href="index.html">Home</a>
+    </div>
+
+    <!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- If you haven't hired my yet, these projects will certainly change your mind -->
+<div class="container">
+	<div class="row">
+		<h2>Projects</h2>
+	</div>
+
+
+
+	<div>
+		<h3>Algorithms and Data Structures</h3>
+		<div class="project">
+			<p>This is small project I wrote of a BST implemenation with an additional class for AVL trees.</p>
+			<a href="trees.py" target="_blank">Trees.py</a>
+		</div>
+		<div class="project">
+			<p>I used Breadth First Search and graph theory to find an actor's <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers" target="_blank">Bacon Number</a>. There is a required data set that is available <a href="movieData.txt" target="_blank">here</a>.</p>
+			<a href="bfs_kbacon.py" target="_blank">BFS.py</a>
+		</div>
+		<div class="project">
+			<p>I have also worked with <a href="markov_chains.py" target="_blank">Markov Chains</a> to create a Taylor Swift <a href="tswift1989.txt" target="_blank" title="required data set">lyrics</a> generator, Fourier Anlysis to edit sounds making it seem like a piano at home is being played in a concert hall, and eigenfaces to build a <a href="https://github.com/andrewnc/facial-recognition" target="_blank">Facial Recognition</a> system.</p>
+		</div>
+
+		
+
+
+
+		<h3>Extra Curricular</h3>
+		<div class="project">
+			<a href="https://andrewnc.pythonanywhere.com" target="_blank">Hackathon</a>
+			<p>This project is our 1st place entry at the annual BYU ACM Hackathon. We used polynomial interpolation to graph user input and return the math equation for the words you entered. Follow the link below to try it out for yourself. It is written in Python and uses the Django framework to render the data.</p>
+		</div>
+		
+		<div class="project">
+			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVTVF2bllaVTFCeE0" target="_blank">Voter Turnout</a>
+			<p>I am interested in numbers, and how they can tell a story. This project is my first dip into the world of statistics and data analysis. I worked on this projected back in late 2015 with very little formal training. It is pretty elementary, but definitely highlights my curiousity.</p>
+		</div>
+
+		<div class="project">
+			<a href="https://github.com/andrewnc/PONG" target="_blank">Pong</a>
+			<p>When asked if I knew anything about Aritificial intellegence, I want to be able to say yes! One of the best ways to learn is by doing, and trying. So I wrote a game of pong - and made some bots that you could test your skills against. There are 3 levels of bots each of them use different calculations to try and hit the ball: <ol><li>Derp AI</li><li>Smart AI</li><li>Impossible to beat AI</li></ol> It takes some configuration to get it up and running, since I didn't build it to distribute, but it is was a very fun project.</p>
+		</div>
+		
+
+	</div>
+
+
+	<div>
+		<h3> Writing and Communication </h3>
+		<div class="project">
+			<p>Technical skills aren't the only important skills. Without the ability to convince someone you've solved their problem through written and verbal communication, there isn't much point to solving the problem in the first place. Here are just a few samples of my writing.</p>
+			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVS1ZKeHBrcnJUeWc" target="_blank">Stats Final Project</a><br/>
+			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVS3RrN0dfVVZyb0k" target="_blank">Essay Contest Entry</a><br/>
+			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVV2JvelV0VHVaWHplQ0ZQV0lMRkNib1pKaTZJ" target="_blank">Research Presentation</a>
+		</div>
+	</div>
+
+
+</div>
+
+
+</body>
+
+</html>
