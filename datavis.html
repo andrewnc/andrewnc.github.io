@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="http://d3js.org/d3.v2.min.js?2.9.3"></script>
+	<!-- bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style>
+
+.link {
+  stroke: #aaa;
+}
+
+.node text {
+stroke:#333;
+cursos:pointer;
+}
+
+.node circle{
+stroke:#fff;
+stroke-width:3px;
+fill:#555;
+}
+
+</style>
+<body>
+<script>
+
+var width = 960,
+    height = 760
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force = d3.layout.force()
+    .gravity(.05)
+    .distance(350)
+    .charge(-100)
+    .size([width, height]);
+
+d3.json("graphFile.json", function(json) {
+  force
+      .nodes(json.nodes)
+      .links(json.links)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(json.links)
+    .enter().append("line")
+      .attr("class", "link")
+    .style("stroke-width", function(d) { return Math.sqrt(d.weight); });
+
+  var node = svg.selectAll(".node")
+      .data(json.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .call(force.drag);
+
+  node.append("circle")
+      .attr("r","10");
+
+  node.append("text")
+      .attr("dx", 12)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name });
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+});
+
+</script>
+<div class="container" style="position: relative;
+    left: 838px;
+    top: -733px;">
+	<div class="row">
+		<div class="col-md-4">
+			<table class="table">
+			<thead>
+				<th>Letter</th>
+				<th>Count</th>
+				<th>Frequency</th>
+			</thead>
+			<tbody>
+				<tr><td>a</td><td>2551</td><td>7.47</td></tr>
+				<tr><td>b</td><td>568</td><td>1.66</td></tr>
+				<tr><td>c</td><td>943</td><td>2.76</td></tr>
+				<tr><td>d</td><td>1181</td><td>3.46</td></tr>
+				<tr><td>e</td><td>5033</td><td>14.74</td></tr>
+				<tr><td>f</td><td>1005</td><td>2.94</td></tr>
+				<tr><td>g</td><td>424</td><td>1.24</td></tr>
+				<tr><td>h</td><td>1974</td><td>5.78</td></tr>
+				<tr><td>i</td><td>2364</td><td>6.93</td></tr>
+				<tr><td>j</td><td>52</td><td>0.15</td></tr>
+				<tr><td>k</td><td>51</td><td>0.15</td></tr>
+				<tr><td>l</td><td>1419</td><td>4.16</td></tr>
+				<tr><td>m</td><td>667</td><td>1.95</td></tr>
+				<tr><td>n</td><td>2549</td><td>7.47</td></tr>
+				<tr><td>o</td><td>2658</td><td>7.79</td></tr>
+				<tr><td>p</td><td>547</td><td>1.60</td></tr>
+				<tr><td>q</td><td>42</td><td>0.12</td></tr>
+				<tr><td>r</td><td>2108</td><td>6.18</td></tr>
+				<tr><td>s</td><td>2339</td><td>6.85</td></tr>
+				<tr><td>t</td><td>3573</td><td>10.47</td></tr>
+				<tr><td>u</td><td>748</td><td>2.19</td></tr>
+				<tr><td>v</td><td>395</td><td>1.16</td></tr>
+				<tr><td>w</td><td>339</td><td>0.99</td></tr>
+				<tr><td>x</td><td>96</td><td>0.28</td></tr>
+				<tr><td>y</td><td>477</td><td>1.40</td></tr>
+				<tr><td>z</td><td>31</td><td>0.09</td></tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+</body>
