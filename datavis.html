@@ -5,6 +5,9 @@
 	<!-- bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.tablesorter.js"></script> 
+
 <style>
 
 .link {
@@ -20,6 +23,10 @@ cursos:pointer;
 stroke:#fff;
 stroke-width:3px;
 fill:#555;
+}
+
+th:hover{
+	cursor: pointer;
 }
 
 </style>
@@ -65,6 +72,17 @@ d3.json("graphFile.json", function(json) {
       .attr("dy", ".35em")
       .text(function(d) { return d.name });
 
+   node.on('mouseover', function(d) {
+	  link.style('stroke-width', function(l) {
+	    if (d === l.source || d === l.target)
+	      return 4;
+	    });
+	});
+
+   node.on('mouseout', function() {
+	  link.style('stroke-width', function(d) { return Math.sqrt(d.weight); });
+	});
+
   force.on("tick", function() {
     link.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
@@ -81,39 +99,331 @@ d3.json("graphFile.json", function(json) {
     top: -733px;">
 	<div class="row">
 		<div class="col-md-4">
-			<table class="table">
+			<table class="table tablesorter">
 			<thead>
-				<th>Letter</th>
-				<th>Count</th>
-				<th>Frequency</th>
+				<th><div class="glyphicon glyphicon-sort"></div> Letter</th>
+				<th><div class="glyphicon glyphicon-sort"></div> Frequency</th>
 			</thead>
 			<tbody>
-				<tr><td>a</td><td>2551</td><td>7.47</td></tr>
-				<tr><td>b</td><td>568</td><td>1.66</td></tr>
-				<tr><td>c</td><td>943</td><td>2.76</td></tr>
-				<tr><td>d</td><td>1181</td><td>3.46</td></tr>
-				<tr><td>e</td><td>5033</td><td>14.74</td></tr>
-				<tr><td>f</td><td>1005</td><td>2.94</td></tr>
-				<tr><td>g</td><td>424</td><td>1.24</td></tr>
-				<tr><td>h</td><td>1974</td><td>5.78</td></tr>
-				<tr><td>i</td><td>2364</td><td>6.93</td></tr>
-				<tr><td>j</td><td>52</td><td>0.15</td></tr>
-				<tr><td>k</td><td>51</td><td>0.15</td></tr>
-				<tr><td>l</td><td>1419</td><td>4.16</td></tr>
-				<tr><td>m</td><td>667</td><td>1.95</td></tr>
-				<tr><td>n</td><td>2549</td><td>7.47</td></tr>
-				<tr><td>o</td><td>2658</td><td>7.79</td></tr>
-				<tr><td>p</td><td>547</td><td>1.60</td></tr>
-				<tr><td>q</td><td>42</td><td>0.12</td></tr>
-				<tr><td>r</td><td>2108</td><td>6.18</td></tr>
-				<tr><td>s</td><td>2339</td><td>6.85</td></tr>
-				<tr><td>t</td><td>3573</td><td>10.47</td></tr>
-				<tr><td>u</td><td>748</td><td>2.19</td></tr>
-				<tr><td>v</td><td>395</td><td>1.16</td></tr>
-				<tr><td>w</td><td>339</td><td>0.99</td></tr>
-				<tr><td>x</td><td>96</td><td>0.28</td></tr>
-				<tr><td>y</td><td>477</td><td>1.40</td></tr>
-				<tr><td>z</td><td>31</td><td>0.09</td></tr>
+				<tr><td>ab</td><td>41</td></tr>
+				<tr><td>ac</td><td>99</td></tr>
+				<tr><td>ad</td><td>30</td></tr>
+				<tr><td>af</td><td>15</td></tr>
+				<tr><td>ag</td><td>28</td></tr>
+				<tr><td>ah</td><td>1</td></tr>
+				<tr><td>ai</td><td>58</td></tr>
+				<tr><td>aj</td><td>14</td></tr>
+				<tr><td>ak</td><td>30</td></tr>
+				<tr><td>al</td><td>455</td></tr>
+				<tr><td>am</td><td>49</td></tr>
+				<tr><td>an</td><td>474</td></tr>
+				<tr><td>ao</td><td>1</td></tr>
+				<tr><td>ap</td><td>39</td></tr>
+				<tr><td>ar</td><td>170</td></tr>
+				<tr><td>as</td><td>157</td></tr>
+				<tr><td>at</td><td>544</td></tr>
+				<tr><td>au</td><td>6</td></tr>
+				<tr><td>av</td><td>82</td></tr>
+				<tr><td>aw</td><td>55</td></tr>
+				<tr><td>ax</td><td>10</td></tr>
+				<tr><td>ay</td><td>78</td></tr>
+				<tr><td>az</td><td>1</td></tr>
+				<tr><td>ba</td><td>12</td></tr>
+				<tr><td>be</td><td>297</td></tr>
+				<tr><td>bi</td><td>21</td></tr>
+				<tr><td>bj</td><td>13</td></tr>
+				<tr><td>bl</td><td>45</td></tr>
+				<tr><td>bm</td><td>4</td></tr>
+				<tr><td>bo</td><td>22</td></tr>
+				<tr><td>br</td><td>9</td></tr>
+				<tr><td>bs</td><td>6</td></tr>
+				<tr><td>bt</td><td>8</td></tr>
+				<tr><td>bu</td><td>24</td></tr>
+				<tr><td>by</td><td>104</td></tr>
+				<tr><td>ca</td><td>47</td></tr>
+				<tr><td>ce</td><td>243</td></tr>
+				<tr><td>ch</td><td>178</td></tr>
+				<tr><td>ci</td><td>45</td></tr>
+				<tr><td>ck</td><td>5</td></tr>
+				<tr><td>cl</td><td>50</td></tr>
+				<tr><td>co</td><td>94</td></tr>
+				<tr><td>cr</td><td>20</td></tr>
+				<tr><td>ct</td><td>184</td></tr>
+				<tr><td>cu</td><td>42</td></tr>
+				<tr><td>cy</td><td>2</td></tr>
+				<tr><td>da</td><td>24</td></tr>
+				<tr><td>de</td><td>256</td></tr>
+				<tr><td>df</td><td>3</td></tr>
+				<tr><td>dg</td><td>16</td></tr>
+				<tr><td>dh</td><td>1</td></tr>
+				<tr><td>di</td><td>106</td></tr>
+				<tr><td>dj</td><td>6</td></tr>
+				<tr><td>dm</td><td>42</td></tr>
+				<tr><td>do</td><td>17</td></tr>
+				<tr><td>dr</td><td>5</td></tr>
+				<tr><td>ds</td><td>19</td></tr>
+				<tr><td>du</td><td>31</td></tr>
+				<tr><td>dv</td><td>2</td></tr>
+				<tr><td>dw</td><td>1</td></tr>
+				<tr><td>dy</td><td>4</td></tr>
+				<tr><td>ea</td><td>132</td></tr>
+				<tr><td>eb</td><td>17</td></tr>
+				<tr><td>ec</td><td>207</td></tr>
+				<tr><td>ed</td><td>332</td></tr>
+				<tr><td>ef</td><td>22</td></tr>
+				<tr><td>eg</td><td>53</td></tr>
+				<tr><td>eh</td><td>2</td></tr>
+				<tr><td>ei</td><td>80</td></tr>
+				<tr><td>ej</td><td>1</td></tr>
+				<tr><td>el</td><td>90</td></tr>
+				<tr><td>em</td><td>79</td></tr>
+				<tr><td>en</td><td>607</td></tr>
+				<tr><td>eo</td><td>42</td></tr>
+				<tr><td>ep</td><td>77</td></tr>
+				<tr><td>eq</td><td>21</td></tr>
+				<tr><td>er</td><td>525</td></tr>
+				<tr><td>es</td><td>668</td></tr>
+				<tr><td>et</td><td>36</td></tr>
+				<tr><td>eu</td><td>2</td></tr>
+				<tr><td>ev</td><td>63</td></tr>
+				<tr><td>ew</td><td>10</td></tr>
+				<tr><td>ex</td><td>60</td></tr>
+				<tr><td>ey</td><td>31</td></tr>
+				<tr><td>fa</td><td>12</td></tr>
+				<tr><td>fe</td><td>37</td></tr>
+				<tr><td>fi</td><td>111</td></tr>
+				<tr><td>fl</td><td>4</td></tr>
+				<tr><td>fo</td><td>140</td></tr>
+				<tr><td>fr</td><td>48</td></tr>
+				<tr><td>ft</td><td>13</td></tr>
+				<tr><td>fu</td><td>7</td></tr>
+				<tr><td>fy</td><td>4</td></tr>
+				<tr><td>ga</td><td>25</td></tr>
+				<tr><td>gd</td><td>1</td></tr>
+				<tr><td>ge</td><td>55</td></tr>
+				<tr><td>gh</td><td>36</td></tr>
+				<tr><td>gi</td><td>57</td></tr>
+				<tr><td>gl</td><td>2</td></tr>
+				<tr><td>gm</td><td>3</td></tr>
+				<tr><td>gn</td><td>14</td></tr>
+				<tr><td>go</td><td>6</td></tr>
+				<tr><td>gr</td><td>76</td></tr>
+				<tr><td>gs</td><td>9</td></tr>
+				<tr><td>gt</td><td>1</td></tr>
+				<tr><td>gu</td><td>11</td></tr>
+				<tr><td>ha</td><td>449</td></tr>
+				<tr><td>he</td><td>976</td></tr>
+				<tr><td>hf</td><td>2</td></tr>
+				<tr><td>hi</td><td>162</td></tr>
+				<tr><td>hm</td><td>13</td></tr>
+				<tr><td>hn</td><td>5</td></tr>
+				<tr><td>ho</td><td>121</td></tr>
+				<tr><td>hr</td><td>14</td></tr>
+				<tr><td>hs</td><td>6</td></tr>
+				<tr><td>ht</td><td>27</td></tr>
+				<tr><td>hu</td><td>5</td></tr>
+				<tr><td>ia</td><td>53</td></tr>
+				<tr><td>ib</td><td>22</td></tr>
+				<tr><td>ic</td><td>267</td></tr>
+				<tr><td>id</td><td>175</td></tr>
+				<tr><td>ie</td><td>71</td></tr>
+				<tr><td>if</td><td>57</td></tr>
+				<tr><td>ig</td><td>60</td></tr>
+				<tr><td>ik</td><td>4</td></tr>
+				<tr><td>il</td><td>67</td></tr>
+				<tr><td>im</td><td>67</td></tr>
+				<tr><td>in</td><td>465</td></tr>
+				<tr><td>io</td><td>247</td></tr>
+				<tr><td>ip</td><td>10</td></tr>
+				<tr><td>iq</td><td>2</td></tr>
+				<tr><td>ir</td><td>88</td></tr>
+				<tr><td>is</td><td>210</td></tr>
+				<tr><td>it</td><td>359</td></tr>
+				<tr><td>iv</td><td>103</td></tr>
+				<tr><td>ix</td><td>8</td></tr>
+				<tr><td>iz</td><td>29</td></tr>
+				<tr><td>ja</td><td>1</td></tr>
+				<tr><td>je</td><td>14</td></tr>
+				<tr><td>jo</td><td>22</td></tr>
+				<tr><td>ju</td><td>15</td></tr>
+				<tr><td>ke</td><td>37</td></tr>
+				<tr><td>ki</td><td>2</td></tr>
+				<tr><td>kl</td><td>1</td></tr>
+				<tr><td>kn</td><td>2</td></tr>
+				<tr><td>kr</td><td>1</td></tr>
+				<tr><td>ks</td><td>1</td></tr>
+				<tr><td>la</td><td>119</td></tr>
+				<tr><td>ld</td><td>24</td></tr>
+				<tr><td>le</td><td>195</td></tr>
+				<tr><td>lf</td><td>5</td></tr>
+				<tr><td>li</td><td>113</td></tr>
+				<tr><td>lm</td><td>1</td></tr>
+				<tr><td>lo</td><td>23</td></tr>
+				<tr><td>ls</td><td>12</td></tr>
+				<tr><td>lt</td><td>4</td></tr>
+				<tr><td>lu</td><td>16</td></tr>
+				<tr><td>lv</td><td>10</td></tr>
+				<tr><td>ly</td><td>26</td></tr>
+				<tr><td>ma</td><td>103</td></tr>
+				<tr><td>mb</td><td>58</td></tr>
+				<tr><td>me</td><td>239</td></tr>
+				<tr><td>mf</td><td>2</td></tr>
+				<tr><td>mi</td><td>45</td></tr>
+				<tr><td>mn</td><td>1</td></tr>
+				<tr><td>mo</td><td>38</td></tr>
+				<tr><td>mp</td><td>43</td></tr>
+				<tr><td>ms</td><td>11</td></tr>
+				<tr><td>mu</td><td>3</td></tr>
+				<tr><td>my</td><td>2</td></tr>
+				<tr><td>na</td><td>91</td></tr>
+				<tr><td>nc</td><td>67</td></tr>
+				<tr><td>nd</td><td>377</td></tr>
+				<tr><td>ne</td><td>124</td></tr>
+				<tr><td>nf</td><td>23</td></tr>
+				<tr><td>ng</td><td>210</td></tr>
+				<tr><td>nh</td><td>5</td></tr>
+				<tr><td>ni</td><td>138</td></tr>
+				<tr><td>nj</td><td>3</td></tr>
+				<tr><td>nk</td><td>5</td></tr>
+				<tr><td>nl</td><td>16</td></tr>
+				<tr><td>nm</td><td>12</td></tr>
+				<tr><td>no</td><td>105</td></tr>
+				<tr><td>nq</td><td>1</td></tr>
+				<tr><td>nr</td><td>2</td></tr>
+				<tr><td>ns</td><td>174</td></tr>
+				<tr><td>nt</td><td>397</td></tr>
+				<tr><td>nu</td><td>34</td></tr>
+				<tr><td>nv</td><td>18</td></tr>
+				<tr><td>ny</td><td>84</td></tr>
+				<tr><td>oa</td><td>2</td></tr>
+				<tr><td>ob</td><td>11</td></tr>
+				<tr><td>oc</td><td>9</td></tr>
+				<tr><td>od</td><td>9</td></tr>
+				<tr><td>oe</td><td>1</td></tr>
+				<tr><td>of</td><td>548</td></tr>
+				<tr><td>og</td><td>4</td></tr>
+				<tr><td>oh</td><td>10</td></tr>
+				<tr><td>oi</td><td>33</td></tr>
+				<tr><td>ol</td><td>58</td></tr>
+				<tr><td>om</td><td>95</td></tr>
+				<tr><td>on</td><td>574</td></tr>
+				<tr><td>op</td><td>47</td></tr>
+				<tr><td>or</td><td>475</td></tr>
+				<tr><td>os</td><td>64</td></tr>
+				<tr><td>ot</td><td>150</td></tr>
+				<tr><td>ou</td><td>137</td></tr>
+				<tr><td>ov</td><td>51</td></tr>
+				<tr><td>ow</td><td>43</td></tr>
+				<tr><td>ox</td><td>2</td></tr>
+				<tr><td>oy</td><td>3</td></tr>
+				<tr><td>pa</td><td>36</td></tr>
+				<tr><td>pe</td><td>107</td></tr>
+				<tr><td>pi</td><td>8</td></tr>
+				<tr><td>pl</td><td>17</td></tr>
+				<tr><td>po</td><td>101</td></tr>
+				<tr><td>pr</td><td>166</td></tr>
+				<tr><td>ps</td><td>4</td></tr>
+				<tr><td>pt</td><td>24</td></tr>
+				<tr><td>pu</td><td>30</td></tr>
+				<tr><td>qu</td><td>42</td></tr>
+				<tr><td>ra</td><td>97</td></tr>
+				<tr><td>rc</td><td>23</td></tr>
+				<tr><td>rd</td><td>40</td></tr>
+				<tr><td>re</td><td>552</td></tr>
+				<tr><td>rf</td><td>4</td></tr>
+				<tr><td>rg</td><td>19</td></tr>
+				<tr><td>rh</td><td>1</td></tr>
+				<tr><td>ri</td><td>174</td></tr>
+				<tr><td>rk</td><td>3</td></tr>
+				<tr><td>rl</td><td>5</td></tr>
+				<tr><td>rm</td><td>41</td></tr>
+				<tr><td>rn</td><td>29</td></tr>
+				<tr><td>ro</td><td>141</td></tr>
+				<tr><td>rp</td><td>9</td></tr>
+				<tr><td>rq</td><td>2</td></tr>
+				<tr><td>rs</td><td>175</td></tr>
+				<tr><td>rt</td><td>120</td></tr>
+				<tr><td>ru</td><td>16</td></tr>
+				<tr><td>rv</td><td>19</td></tr>
+				<tr><td>rw</td><td>5</td></tr>
+				<tr><td>ry</td><td>54</td></tr>
+				<tr><td>sa</td><td>48</td></tr>
+				<tr><td>sc</td><td>21</td></tr>
+				<tr><td>sd</td><td>10</td></tr>
+				<tr><td>se</td><td>288</td></tr>
+				<tr><td>sh</td><td>329</td></tr>
+				<tr><td>si</td><td>194</td></tr>
+				<tr><td>sl</td><td>36</td></tr>
+				<tr><td>sm</td><td>8</td></tr>
+				<tr><td>so</td><td>82</td></tr>
+				<tr><td>sp</td><td>21</td></tr>
+				<tr><td>sq</td><td>2</td></tr>
+				<tr><td>st</td><td>148</td></tr>
+				<tr><td>su</td><td>108</td></tr>
+				<tr><td>sw</td><td>3</td></tr>
+				<tr><td>sy</td><td>3</td></tr>
+				<tr><td>ta</td><td>312</td></tr>
+				<tr><td>tc</td><td>1</td></tr>
+				<tr><td>te</td><td>547</td></tr>
+				<tr><td>th</td><td>1047</td></tr>
+				<tr><td>ti</td><td>464</td></tr>
+				<tr><td>tl</td><td>9</td></tr>
+				<tr><td>tm</td><td>13</td></tr>
+				<tr><td>tn</td><td>5</td></tr>
+				<tr><td>to</td><td>249</td></tr>
+				<tr><td>tr</td><td>34</td></tr>
+				<tr><td>ts</td><td>73</td></tr>
+				<tr><td>tu</td><td>70</td></tr>
+				<tr><td>tw</td><td>41</td></tr>
+				<tr><td>ty</td><td>67</td></tr>
+				<tr><td>tz</td><td>1</td></tr>
+				<tr><td>ua</td><td>31</td></tr>
+				<tr><td>ub</td><td>31</td></tr>
+				<tr><td>uc</td><td>55</td></tr>
+				<tr><td>ud</td><td>23</td></tr>
+				<tr><td>ue</td><td>28</td></tr>
+				<tr><td>uf</td><td>4</td></tr>
+				<tr><td>ug</td><td>4</td></tr>
+				<tr><td>ui</td><td>14</td></tr>
+				<tr><td>ul</td><td>35</td></tr>
+				<tr><td>um</td><td>47</td></tr>
+				<tr><td>un</td><td>82</td></tr>
+				<tr><td>uo</td><td>6</td></tr>
+				<tr><td>up</td><td>25</td></tr>
+				<tr><td>ur</td><td>140</td></tr>
+				<tr><td>us</td><td>81</td></tr>
+				<tr><td>ut</td><td>141</td></tr>
+				<tr><td>uv</td><td>1</td></tr>
+				<tr><td>va</td><td>26</td></tr>
+				<tr><td>ve</td><td>263</td></tr>
+				<tr><td>vi</td><td>72</td></tr>
+				<tr><td>vo</td><td>31</td></tr>
+				<tr><td>vy</td><td>3</td></tr>
+				<tr><td>wa</td><td>7</td></tr>
+				<tr><td>we</td><td>56</td></tr>
+				<tr><td>wh</td><td>104</td></tr>
+				<tr><td>wi</td><td>69</td></tr>
+				<tr><td>wn</td><td>3</td></tr>
+				<tr><td>wo</td><td>28</td></tr>
+				<tr><td>wr</td><td>8</td></tr>
+				<tr><td>ws</td><td>14</td></tr>
+				<tr><td>xa</td><td>2</td></tr>
+				<tr><td>xc</td><td>27</td></tr>
+				<tr><td>xe</td><td>30</td></tr>
+				<tr><td>xi</td><td>5</td></tr>
+				<tr><td>xp</td><td>11</td></tr>
+				<tr><td>xt</td><td>8</td></tr>
+				<tr><td>ye</td><td>13</td></tr>
+				<tr><td>yi</td><td>4</td></tr>
+				<tr><td>yl</td><td>4</td></tr>
+				<tr><td>ym</td><td>3</td></tr>
+				<tr><td>ys</td><td>8</td></tr>
+				<tr><td>yt</td><td>1</td></tr>
+				<tr><td>za</td><td>1</td></tr>
+				<tr><td>ze</td><td>26</td></tr>
+				<tr><td>zi</td><td>2</td></tr>
+				<tr><td>zs</td><td>1</td></tr>
+				<tr><td>zu</td><td>1</td></tr>
 			</tbody>
 			</table>
 		</div>
@@ -121,3 +431,12 @@ d3.json("graphFile.json", function(json) {
 </div>
 
 </body>
+
+
+<script>
+$(document).ready(function() 
+    { 
+        $(".table").tablesorter(); 
+    } 
+); 
+</script>
