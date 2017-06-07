@@ -3,7 +3,10 @@
 <head>
 	<title>Andrew Carr</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <style>
+/*Yes, I'm breaking standard conventions by not putting my styles in a seperate file, but sometimes you just gotta do...*/
 body, html {
 	/*max-width: 100%;*/
 	/*overflow-x: hidden;*/
@@ -12,6 +15,19 @@ body, html {
 	font: 400 15px/1.8 "Lato", sans-serif;
 	color: #777;
 }
+
+.nav-pills>li>a:link, .nav-pills>li>a:visited{
+	color:#777;
+	margin:3px;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	color:white;
+	background-color:#536872;
+	margin:3px;
+}
+
+
 
 .project {
 	border:1px solid black; 
@@ -53,12 +69,15 @@ h2 {
   font: 25px "Lato", sans-serif;
   color: #111;
 }
+
+
+
 </style>
 
 </head>
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -68,16 +87,30 @@ h2 {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" style="font: 17px 'Lato', sans-serif;" href="index.html">Home</a>
+      <ul class="nav nav-pills">
+	      <li role="presentation" class="active"><a href="#top">Top</a></li>
+	      <li role="presentation"><a href="#extra-curricular">Extra Curricular</a></li>
+	      <li role="presentation"><a href="#algo">Algorithms and Data Structures</a></li>
+	      <li role="presentation"><a href="#res">Research</a></li>
+	      <li role="presentation"><a href="#biz">Entrepreneurial</a></li>
+	      <li role="presentation"><a href="#words">Writing and Communication</a></li>
+	      <li role="presentation"><a href="#help">Globally Impactful Service</a></li>
+ 	 </ul>
+
+
     </div>
 
     <!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+
+
 <!-- If you haven't hired me yet, these projects will certainly change your mind -->
 <div class="container">
-	<div class="row">
-		<h2>Projects</h2>
+	<hr class="featurette-divider">
+	<div class="row" style="margin-top:45px;">
+		<h2 class="proj"><a href="index.html"><span class="glyphicon glyphicon-home" style="color:#536872"></span></a> Projects</h2>
 	</div>
 
 
@@ -86,14 +119,14 @@ h2 {
 
 
 
-		<h3>Extra Curricular</h3>
+		<h3 class="extra-curricular">Extra Curricular</h3>
 		<div class="project">
 			<a href="https://andrewnc.pythonanywhere.com" target="_blank">Hackathon</a>
 			<p>Our project won 1st place at the annual BYU ACM Hackathon. We used polynomial interpolation to graph user input and return the math equation for the words you entered. Follow the link above to try it out for yourself. It is written in Python and uses the Django framework to render the data.</p>
 		</div>
 		<div class="project">
 			<a href="https://thompsonsampling.pythonanywhere.com" target="_blank">Thompson Sampling</a>
-			<p>Traditional wisdom says that A/B testing is the best (sometimes the only) way to optimize web pages. However, Thompson Sampling uses probability to ensure that you get faster results (learn which page is better more quickly) and lose less revenue during the testing process. I made a small example that uses Thompson Sampling to optimize between two simple pages. click <a href="https://github.com/andrewnc/thompsonsampling">here</a> to see the code behind the scenes.</p>
+			<p>Traditional wisdom says that A/B testing is the best (sometimes the only) way to optimize web pages. However, Thompson Sampling uses probability to ensure that you get faster results (learn which page is better more quickly) and lose less revenue during the testing process. I made a small example that uses Thompson Sampling to optimize between two simple pages. click <a href="https://github.com/andrewnc/thompsonsampling" target="_blank">here</a> to see the code behind the scenes.</p>
 		</div>
 		<div class="project">
 			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVTVF2bllaVTFCeE0" target="_blank">Voter Turnout</a>
@@ -115,7 +148,7 @@ h2 {
 
 		
 
-		<h3>Algorithms and Data Structures</h3>
+		<h3 class="algo">Algorithms and Data Structures</h3>
 		<p>I enjoy using code to solve problems, here are a few examples of projects I have done that either solved a problem, or could be used as a tool in problem solving.</p>
 		<div class="project">
 			  <p>Here we have a project where I worked with images. This project uses eigenfaces and comparitive analysis in a <a href="https://github.com/andrewnc/facial-recognition" target="_blank">Facial Recognition</a> system.</p>
@@ -155,7 +188,7 @@ h2 {
 	</div>
 
 	<div>
-		<h3>Research</h3>
+		<h3 class="research">Research</h3>
 		<div class="project">
 			<p><b>BYU CS Department</b><br />
 			I am currently working on a machine learning project with a member of the Computer Science department, we are researching low cost MRI
@@ -176,7 +209,7 @@ h2 {
 
 
 	<div>
-		<h3>Entrepreneurial</h3>
+		<h3 class="money">Entrepreneurial</h3>
 		<p>Throughout my college career, I have been a member of several tech start-ups. While none of them got off the ground, I learned extremely valuable lessons and gained some great skills and perspective that have served me well, and will continue to do so.</p>
 
 		<div class="project">
@@ -196,7 +229,7 @@ h2 {
 
 
 	<div>
-		<h3> Writing and Communication </h3>
+		<h3 class="writing"> Writing and Communication </h3>
 		<div class="project">
 			<p>Technical skills aren't the only important skills. There isn't much point in solving a problem, if you don't have the ability to convince someone you've solved their problem through written and verbal communication. Here are just a few samples of my writing.</p>
 			<a href="https://drive.google.com/open?id=0B4TqEMi3hSiVS1ZKeHBrcnJUeWc" target="_blank">Stats Final Project</a><br/>
@@ -206,7 +239,7 @@ h2 {
 	</div>
 
 	<div style="margin-bottom:100px;">
-		<h3>Globally Impactful Service</h3>
+		<h3 class="service">Globally Impactful Service</h3>
 		<p>I am very passionate about helping others and doing work that has social impact. Here are two examples of volunteer work I have done.</p>
 		<div class="project">
 			<p>I led a team of ~20 people that worked 300+ man hours to collect and send over 1,000 lbs of school supplies, hygiene kits, and clothes to orphans in Syria. This project was one of the first socially impactful things I worked on. It was very rewarding and taught me a lot about working with others, and gave me great leadership experience.</p>
@@ -220,6 +253,53 @@ h2 {
 
 </div>
 
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+  return false;
+});
+
+$("a[href='#extra-curricular']").click(function() {
+  $("html, body").animate({ scrollTop: $(".extra-curricular").offset().top- 60 }, "slow");
+  return false;
+});
+
+$("a[href='#algo']").click(function() {
+  $("html, body").animate({ scrollTop: $(".algo").offset().top - 60 }, "slow");
+  return false;
+});
+$("a[href='#res']").click(function() {
+  $("html, body").animate({ scrollTop: $(".research").offset().top- 60 }, "slow");
+  return false;
+});
+$("a[href='#biz']").click(function() {
+  $("html, body").animate({ scrollTop: $(".money").offset().top- 60 }, "slow");
+  return false;
+});
+$("a[href='#words']").click(function() {
+  $("html, body").animate({ scrollTop: $(".writing").offset().top - 60}, "slow");
+  return false;
+});
+$("a[href='#help']").click(function() {
+  $("html, body").animate({ scrollTop: $(".service").offset().top - 60}, "slow");
+  return false;
+});
+
+
+
+$("li[role='presentation']").children().click(function() {
+	$("li[role='presentation']").removeClass("active");
+	$(this).parent().addClass("active");
+	return false;
+})
+
+});
+
+</script>
 
 </body>
 
