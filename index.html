@@ -1,124 +1,113 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Andrew Carr</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<style>
-body, html {
-	/*max-width: 100%;*/
-	/*overflow-x: hidden;*/
-	height: 100%;
-	margin: 0;
-	font: 400 15px/1.8 "Lato", sans-serif;
-	color: #777;
-}
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="keywords" content="HTML5 Template">
+<meta name="description" content="Personal Portfolio Site for Andrew Carr">
+<meta name="author" content="Andrew Carr">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Andrew Carr Resume Site</title>
 
 
-.bgimg-1, .bgimg-2, .bgimg-3 {
-  position: relative;
-  opacity: 0.65;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+<link href="./static/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./static/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./static/themify-icons.css">
+<link rel="stylesheet" type="text/css" href="./static/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="./static/style.css">
+<link rel="stylesheet" type="text/css" href="./static/responsive.css">
 
-}
-.bgimg-1 {
-  background-image: url("IMG_3763.JPG");
-  min-height: 100%;
-}
+<link rel="stylesheet" href="./static/index.html" data-style="styles">
+<link rel="stylesheet" href="./static/style-customizer.css">
 
-.bgimg-2 {
-  background-image: url("https://hackadaycom.files.wordpress.com/2015/01/screen-shot-2015-01-26-at-14-56-45.png?w=2000");
-  min-height: 400px;
-}
+<link rel="stylesheet" href="./static/custom.css">
 
-.bgimg-3 {
-  /*background-image: url("resume.png");*/
-  min-height: 400px;
-}
-
-.caption {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  color: #000;
-}
-
-.caption span.border {
-  background-color: #111;
-  color: #fff;
-  padding: 18px;
-  font-size: 25px;
-  letter-spacing: 10px;
-}
-
-h3 {
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  font: 20px "Lato", sans-serif;
-  color: #111;
-}
-</style>
+<!-- <script async="" src="./static/js"></script> -->
 </head>
 <body>
-<!-- I know what you're thinking, wow, this site looks so great. Look at that stellar resume. We should definitely hire him. Yeah, you should. :) -->
 
-<div class="bgimg-1">
-  <a href="projects.html" style="font: 17px 'Lato', sans-serif;" class="btn btn-default pull-right">Projects</a>
-  <div class="caption">
-    <span class="border">Andrew Carr</span>
-  </div>
+<div id="loading" class="purple-bg" style="display: none;">
+<div id="loading-center">
+<div data-loader="spinner"></div>
 </div>
-<div style="position: relative; text-align:center;top:-25px;">
-    <span class="glyphicon" style="position:absolute;bottom:0;">&#xe094;</span>
-  </div>
-
-<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
-  <h3 style="text-align:center;">Mathematician</h3>
-</div>
-
-<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
-  <h3 style="text-align:center;">Data Scientist</h3>
-</div>
-
-<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
-  <h3 style="text-align:center;">Problem Solver</h3>
 </div>
 
 
+<header class="header">
+<div class="container-fluid">
+<div class="row">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white-bg">
+<div class="col-md-3 purple-bg">
+<a class="navbar-brand" href="#"><img src="./static/logo.png" class="img-fluid" alt="logo"></a>
+</div>
+<div class="col-md-9">
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="ti-menu"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto w-100 justify-content-end">
+<li class="nav-item active">
+<a class="nav-link" data-type="page-transition" href="index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-type="page-transition" href="resume.pdf">resume</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-type="page-transition" href="projects/projects.html">portfolio</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+</header>
 
-<div class="bgimg-2">
-  <div class="caption">
-    <span class="border" style="background-color:transparent;font-size:25px;color: #f7f7f7;"></span>
-  </div>
+
+<div class="main-container">
+
+<section class="me-home wrapper">
+<div class="container-fluid h-100">
+<div class="row row-eq-height h-100">
+<div class="col-md-3 purple-bg">
+<div class="iq-objects">
+<span class="iq-objects-01">
+<img class="img-fluid" src="./static/back.png" alt="drive">
+</span>
+</div>
+</div>
+<div class="col-md-9 main-content align-self-center">
+<div id="boxscroll" class="iq-home" tabindex="1" style="overflow: hidden; outline: none;">
+<div class="home-deta iq-mt-90">
+<div class="row">
+<div class="col-md-4">
+<div class="boder-img">
+<img src="./static/compressed_me.jpg" class="img-fluid" alt="#">
+</div>
+</div>
+<div class="col-md-8 content-deta">
+<h2 class="iq-tw-8 ">I am Andrew</h2>
+<div id="typer"><h1><span class="iq-font-purple">Machine</span> Learning</h1> </div>
+<p class="lead iq-tw-4">I am a computational mathematician that specializes in machine learning. I love answering tough questions with data. I have a particular interest in high performance computing, AI safety, social impacts of AI, reinforcement learning, and data visualization.</p>
+<a class="button iq-mt-30" href="resume.pdf">Download my CV</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 </div>
 
-<div style="position:relative;">
-  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-    <!-- <div>RESUME</div> -->
-  </div>
-</div>
-<!-- 
-<div class="bgimg-3">
-</div> -->
-<img src="resume.png" style="width:700px;margin-left: auto; margin-right: auto;display: block;" />
 
-<div style="position:relative;">
-  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-<!--     <a href="https://www.github.com/andrewnc" style="font: 17px 'Lato', sans-serif;" target="_blank" class='btn btn-default'>Click to see code samples on github</a> -->
-  	<a href="projects.html" style="font: 17px 'Lato', sans-serif;" class="btn btn-default">Projects</a>
-   
-  </div>
+<script type="text/javascript" src="./static/jquery-min.js"></script>
+<script type="text/javascript" src="./static/bootstrap.min.js"></script>
+<script type="text/javascript" src="./static/jquery.appear.js"></script>
+<script type="text/javascript" src="./static/jquery.typer.js"></script>
+<script type="text/javascript" src="./static/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="./static/style-customizer.js"></script>
+<script type="text/javascript" src="./static/custom.js"></script>
+
 </div>
 
-<div class="bgimg-1">
-  <div class="caption">
-    <span class="border">andrewcarr06@gmail.com</span>
-  </div>
-</div>
-
-</body>
-</html>
+</body></html>
