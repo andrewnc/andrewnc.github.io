@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" href="blog_files/blog.png">    
     <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
     <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
 
 
 <body class="home-template">
@@ -32,25 +33,42 @@
         
     <main class="content" role="main">
 
-
-    <article class="post">
-        <header class="post-header">
-            <span class="post-meta"><time datetime="2019-11-19">19 Nov 2019</time> </span>
-            <h2 class="post-title"><a href="https://andrewnc.github.io/blog/welcome.html">Welcome to the Blog</a></h2>
-        </header>
-        <section class="post-content">
-            <div class="kg-card-markdown"></div>
-        </section>
-    </article>
-
-
     <article class="post">
         <header class="post-header">
             <span class="post-meta"><time datetime="2019-11-25">25 Nov 2019</time> </span>
             <h2 class="post-title"><a href="https://andrewnc.github.io/blog/first_plot_j.html">First Plot in J</a></h2>
         </header>
         <section class="post-content">
-            <div class="kg-card-markdown"></div> 
+            <div class="kg-card-markdown">
+                <p>When first learning a new language, I have a simple heuristic test I call</p>
+                 <h2 class="gs-divider">time to first plot</h2>
+                <p>It is a silly test when you really think about it. I mean, in the limit, you could write a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> where <i>time to first plot</i> is essentially the same amount of time it takes to load the interpreter or compile.</p>
+                <p>But, its somewhat useful nonetheless.</p>
+                <p>Let's get started with one of my favorite languages. <a href="https://www.jsoftware.com/#/README">J</a></p>
+                <blockquote>J is a high-level, general-purpose programming language that is particularly suited to the mathematical, statistical, and logical analysis of data. It is a powerful tool for developing algorithms and exploring problems that are not already well understood.</blockquote>
+                <p>J is commonly used by bitflipping wizards in <a href="https://en.wikipedia.org/wiki/Code_golf">Code Golf</a> or <a href="https://projecteuler.net/">project euler</a>. At first, this functional interpreted array processing languages looks like line noise.</p>
+                <code>+/ ". "0 ": !1000x</code>
+                <p>That simple line calculates the sum of the digits of 1000 factorial (which is 10539 for the curious). It does it in a fraction of a second, and with a low memory footprint. It's awesome.</p>
+                <p>In the next several posts, we'll cover lots of J goodness, but for now, plotting.</p>
+                <p>In J, its phenomenally easy to get started with plotting.</p>
+                <pre>load 'plot'<br />plot i.10</pre>
+                <img src="blog_files/first_plot_j.png" />
+                <p>We can also plot a cool <a href="https://en.wikipedia.org/wiki/Sombrero_function">sombrero function</a></p>
+                <pre>load 'trig'<br />f=: 4 : '(cos r) % 1 + r =. x +&:*: y'<br />plot _4 4 100 ; _4 4 100 ; 'f'</pre>
+                <img src="blog_files/func_plot.png" />
+                <!-- <p>do a cool prime distribution</p> -->
+                <p>Now, as neat as that is, its not what I would call data science. What we really want to do is read in a csv of data. Which we do below and look at the <code>{.</code> head of the array which contains our column names.</p>
+                <pre>load 'csv' <br />df =: readcsv './bike-sharing-demand/train.csv' <br />{. df</pre>
+                <pre>
+┌────────┬──────┬───────┬──────────┬───────┬────┬─────┬────────┬─────────┬──────┬──────────┬─────┐
+│datetime│season│holiday│workingday│weather│temp│atemp│humidity│windspeed│casual│registered│count│
+└────────┴──────┴───────┴──────────┴───────┴────┴─────┴────────┴─────────┴──────┴──────────┴─────┘
+                </pre>
+                <p>We then take the 5th column "temp" <code>5 {" def</code> and peel of the label by <i>de-heading</i> the list <code>}.</code>. We convert to numeric data and plot the temperature.</p>
+                <pre>plot makenum }. 5 {"1 df</pre>
+                <img src="blog_files/temp.png" />
+                <!-- slicing columns <pre>0 {"1 df</pre> -->
+            </div> 
         </section>
     </article>
     <nav class="pagination" role="navigation">

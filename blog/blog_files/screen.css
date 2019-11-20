@@ -222,6 +222,11 @@ code, tt {
 }
 
 pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: 1.6em 0;
@@ -313,7 +318,23 @@ table {
    3. Utilities - These things get used a lot
    ========================================================================== */
 
-/* Hides shit */
+pre {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-left: 3px solid #f36d33;
+    color: #666;
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 1.6em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1em 1.5em;
+    display: block;
+    word-wrap: break-word;
+}
+/* Hides things */
 .hidden {
     text-indent: -9999px;
     visibility: hidden;
@@ -967,5 +988,5 @@ table {
 
 /* ==========================================================================
    End of file. Media queries should be the last thing here. Do not add stuff
-   below this point, or it will probably fuck everything up.
+   below this point, or it will probably not work. 
    ========================================================================== */
