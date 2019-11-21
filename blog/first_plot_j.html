@@ -69,7 +69,7 @@
                 <img src="blog_files/temp.png" />
                 <p>In data science work, however, its often useful (and visually pleasing) to make basic scatter plots. That, unfortunately, is not quite as easy in J. You have to define a verb <code>* =: 3: 0</code> and using the value passed to it <code>y</code> define various parameters for the plot.</p>
                 <p>So, if you wanted to then plot the apparent temperature from the sixth column, you would first define a scatter plot verb</p>
-                <pre>plt_val =: 3 : 0<br />pd 'reset'<br />pd 'pensize 1;type point'<br />pd <y<br />pd 'show'<br />)</pre>
+                <pre>plt_val =: 3 : 0<br />pd 'reset'<br />pd 'pensize 1;type point'<br />pd < y <br />pd 'show'<br />)</pre>
                 <p>Which we then immediately apply in place of the plot function to the 6th column. (remember, J sentences read from right to left)</p>
                 <img src="blog_files/scatter_atemp.png" />
                 <p>In general, we see that plotting (and reading basic data files) is quite simple in J. The odd syntax takes some getting used to, but its lightning fast and sure to annoy your co-workers when they try to read your code.</p>
