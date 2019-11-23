@@ -74,6 +74,15 @@
                 <img src="blog_files/scatter_atemp.png" />
                 <p>In general, we see that plotting (and reading basic data files) is quite simple in J. The odd syntax takes some getting used to, but its lightning fast and sure to annoy your co-workers when they try to read your code.</p>
                 <!-- slicing columns <pre>0 {"1 df</pre> -->
+
+
+                <hr>
+                <p>Edit: Nov 22, 2019</p>
+                <p>I figured out a better way to plot surfaces and scatter plots. If you simply use 'quick' plot semantics.</p>
+                <pre>'pensize 5; type point' plot sin 0.2*i.30</pre>
+                <img src="blog_files/scatter_sin.png" />
+                <pre>'surface' plot sin 0.2 * i.30 30</pre>
+                <img src="blog_files/surface.png" />
             </div> 
         </section>
     </article>
