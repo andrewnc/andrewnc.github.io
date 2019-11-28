@@ -149,6 +149,11 @@ Churn  </pre>
                 <pre>'bar; xlabel No , Yes; title Churned Customers' plot > 1 {"1 counter _1 col df</pre>
                 <img src="blog_files/churn_bar1.png" />
 
+                <p>I tried a number of ways to make a stacked or side by side bar chart. I couldn't quite get it to work though. </p>
+                <img src="blog_files/failed_male_female_bar.png" />
+                <p>So I used a pie chart. Don't judge my data visualization sensibilities too harshly, it still communicates the information that Males and Females don't have noticeably different amounts of churn. To test this properly, we would need to set up a rigorous hypothesis test, which I may attempt in a future article.</p>
+                <pre>'pie; color red,black; xlabel No Yes; title Male Female' plot |: (> (1 {"1 (counter ((< 'Male') E. 1 col df) # (_1 col df)))) ,. (> (1 {"1 (counter ((< 'Female') E. 1 col df) # (_1 col df))))</pre>
+                <img src="blog_files/male_femal_churn.png" />
 <!-- (|: ,: (, ~. _1 col df)) ,. (> < each |: ,: (#/.~ _1 col df)) -->
                <p></p> 
 
