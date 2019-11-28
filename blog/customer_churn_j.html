@@ -97,6 +97,56 @@ Churn  </pre>
 ├───┼────┤
 │Yes│1869│
 └───┴────┘</pre>
+                <p>You have to box the input to counter</p>
+                <pre>counter ;/ ? 2000 # 10
+┌─┬───┐
+│3│212│
+├─┼───┤
+│5│189│
+├─┼───┤
+│7│207│
+├─┼───┤
+│1│200│
+├─┼───┤
+│9│175│
+├─┼───┤
+│0│200│
+├─┼───┤
+│4│204│
+├─┼───┤
+│8│232│
+├─┼───┤
+│2│197│
+├─┼───┤
+│6│184│
+└─┴───┘</pre>
+                <pre>counter ;/ 'a really long sentence'
+┌─┬─┐
+│a│2│
+├─┼─┤
+│ │3│
+├─┼─┤
+│r│1│
+├─┼─┤
+│e│4│
+├─┼─┤
+│l│3│
+├─┼─┤
+│y│1│
+├─┼─┤
+│o│1│
+├─┼─┤
+│n│3│
+├─┼─┤
+│g│1│
+├─┼─┤
+│s│1│
+├─┼─┤
+│t│1│
+├─┼─┤
+│c│1│
+└─┴─┘</pre>
+                <pre>'bar; xlabel No , Yes; title Churned Customers' plot > 1 {"1 counter _1 col df</pre>
                 <img src="blog_files/churn_bar1.png" />
 
 <!-- (|: ,: (, ~. _1 col df)) ,. (> < each |: ,: (#/.~ _1 col df)) -->
