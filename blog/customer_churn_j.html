@@ -40,8 +40,16 @@
             <h2 class="post-title"><a href="https://andrewnc.github.io/blog/customer_churn_j.html">Customer Churn in J</a></h2>
         </header>
         <section class="post-content">
-            <p>work in progress</p>
             <div class="kg-card-markdown">
+                <p>Welcome to another esoteric data science blog. Today, we'll be exploring a small dataset about customer churn. Churn is when a customer, for any number of reasons, is no longer a customer. It can be voluntary or involuntary. Typically, churn analysis focuses on voluntary churn.</p>
+                <p>We'll start by defining a couple of useful verbs. In J, <i>functions</i> are called verbs. They can be monads or dyads, these are not the <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)">'haskell' version</a> of a monad, but refer to the number of arguments taken in by the verb.</p>
+                <p>For example, the monad version of <code>#</code> counts the elements of a list. The verb <code>i.</code> with a numeric argument <code>i. 10</code> generates <code>0 1 2 3 4 5 6 7 8 9</code> which we can then count.</p>
+                <pre># i. 10<br />10</pre>
+                <p>But the dyad version copies the right argument 'left argument' number of times.</p>
+                <pre>2 # 10<br />10 10</pre>
+                <p>I want to make some useful verbs for data analysis. Being a lover of the pydata stack, I often use <a href="https://pandas.pydata.org/">pandas</a> to work with dataframes (inspired by R dataframes). In that spirit, I've named my data array <code>df</code> which was loaded using the 'csv' library in J.</p>
+                <p>We can define a verb <code>head</code> which is dyadic and takes the number of columns and the dataframe. By using the ranked selector operation <code>{</code> we can index into the dataframe and start exploring our data.</p>
+                    <blockquote>Notice that <code>y</code> is the right argument (only argument in the monadic case) and <code>x</code> is the left argument.</blockquote>
                 <pre>head =: dyad : '(i. x) { y'<br />5 head df</pre>
                 <pre>
 ┌──────────┬──────┬─────────────┬───────┬──────────┬──────┬────────────┬────────────────┬───────────────┬──────────────┬────────────┬────────────────┬───────────┬───────────┬───────────────┬──────────────┬────────────────┬─────────────────────────┬────────...
@@ -56,19 +64,16 @@
 │7795-CFOCW│Male  │0            │No     │No        │45    │No          │No phone service│DSL            │Yes           │No          │Yes             │Yes        │No         │No             │One year      │No              │Bank transfer (automatic)│42.3    ...
 └──────────┴──────┴─────────────┴───────┴──────────┴──────┴────────────┴────────────────┴───────────────┴──────────────┴────────────┴────────────────┴───────────┴───────────┴───────────────┴──────────────┴────────────────┴─────────────────────────┴────────...
                 </pre>
-                <pre>col =: dyad : 'makenum }. x {"1 y'<br />18 col df</pre>
-                <pre>dstat 18 col df<br />sample size:       7043<br />minimum:          18.25<br />maximum:         118.75<br />median:           70.35<br />mean:           64.7617<br />std devn:         30.09<br />skewness:     _0.220477<br />kurtosis:       1.74278</pre>
-                <pre># 18 col df<br />7043<br /># ~. 18 col df<br />1585</pre>
-                <pre>no_inds =: (< 'No') = _1 col df<br />I. 1 1 0 1 0 0 1 1 0 1 1 1 1 0 1 1 1 1 0 1 0 1<br />0 1 3 6 7 9 10 11 12 14 15 16 17 19 21</pre>
-                <pre>(I. no_inds) { _1 col df</pre>
-                <pre>┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬...
-│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│...
-└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴...</pre>
-                <p>Alternatively, you can mask the array</p>
-                <pre>no_inds # _1 col df</pre>
-                <pre>┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬...
-│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│...
-└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴...</pre>
+                <blockquote>These tables look a little funny on mobile, sorry about that.</blockquote>
+                <p>We can then make a nice little utility verb that takes a column index (0-indexed, of course) and a dataframe and returns an array of the data. I decided to strip off the first item, which is always the column name in this case, using the <i>behead</i> verb <code>}.</code>. The <code>{"1</code> verb is the main workhorse in this construction. It is dyadic and takes an index on left and a multidimensional array on the right, then selects a column.</p>
+                <pre>col =: dyad : 'makenum }. x {"1 y'</pre>
+                <p>Then we can choose the column out by selecting the column number.</p>
+                <pre>1 col df
+┌──────┬────┬────┬────┬──────┬──────┬────┬──────┬──────┬────┬────┬────┬────┬────┬────┬──────┬──────┬────┬──...
+│Female│Male│Male│Male│Female│Female│Male│Female│Female│Male│Male│Male│Male│Male│Male│Female│Female│Male│Fe...
+└──────┴────┴────┴────┴──────┴──────┴────┴──────┴──────┴────┴────┴────┴────┴────┴────┴──────┴──────┴────┴──...
+                </pre>
+                <p>One drawback of this verb, is you have to know the number of the column. So, to make that easy (kind of?) I made another verb to pull off the first element. In J, elements have rank so the first element is actually an array itself. This makes <a href="https://code.jsoftware.com/wiki/Vocabulary/Loopless">loopless</a> programming possible, and super interesting from a philosophical programming perspective.</p>
                 <pre>columns =: monad : '> 0 { y'<br />columns df<br />customerID      
 gender          
 SeniorCitizen   
@@ -90,14 +95,81 @@ PaymentMethod
 MonthlyCharges  
 TotalCharges    
 Churn  </pre>
-                <p>Wow, I wrote a verb that emulates Counter in python</p>
+                <p>Well, I spent a good half hour making a better <code>columns</code> verb. I wanted the index number to be displayed inline with the column name.</p>
+                <pre>columns =: monad : '(;/ |: ,: i. #0{y) ,. (|: ,: 0{ y)'<br />columns df
+┌──┬────────────────┐
+│0 │customerID      │
+├──┼────────────────┤
+│1 │gender          │
+├──┼────────────────┤
+│2 │SeniorCitizen   │
+├──┼────────────────┤
+│3 │Partner         │
+├──┼────────────────┤
+│4 │Dependents      │
+├──┼────────────────┤
+│5 │tenure          │
+├──┼────────────────┤
+│6 │PhoneService    │
+├──┼────────────────┤
+│7 │MultipleLines   │
+├──┼────────────────┤
+│8 │InternetService │
+├──┼────────────────┤
+│9 │OnlineSecurity  │
+├──┼────────────────┤
+│10│OnlineBackup    │
+├──┼────────────────┤
+│11│DeviceProtection│
+├──┼────────────────┤
+│12│TechSupport     │
+├──┼────────────────┤
+│13│StreamingTV     │
+├──┼────────────────┤
+│14│StreamingMovies │
+├──┼────────────────┤
+│15│Contract        │
+├──┼────────────────┤
+│16│PaperlessBilling│
+├──┼────────────────┤
+│17│PaymentMethod   │
+├──┼────────────────┤
+│18│MonthlyCharges  │
+├──┼────────────────┤
+│19│TotalCharges    │
+├──┼────────────────┤
+│20│Churn           │
+└──┴────────────────┘</pre>
+                <p>I'm not the most productive in this language, but I am getting faster, and I am starting to see the power in this paradigm. I'm not going to go into detail about this verb, but it follows closely with the <code>counter</code> verb I define and explain later.</p>
+                <p>We see that column 18 is the <code>MonthlyCharges</code> column. We can load the <code>stat</code> package and get descriptive statistics.</p>
+                <pre>dstat 18 col df<br />sample size:       7043<br />minimum:          18.25<br />maximum:         118.75<br />median:           70.35<br />mean:           64.7617<br />std devn:         30.09<br />skewness:     _0.220477<br />kurtosis:       1.74278</pre>
+                <p>We can then count how many elements we have and count the unique elements also. Later, we have a verb to better display our unique elements, but for now we just get the count.</p>
+                <pre># 18 col df<br />7043<br /># ~. 18 col df<br />1585</pre>
+                <p>J has a SQL package that I'll explore in the future that would make csv->sql and querying much easier. However, until then, we'll do some equality indexing and masking. We find the index positions where there are certain values then use those values for plotting and analysis.</p>
+                <pre>no_inds =: (< 'No') = _1 col df<br />I. 1 1 0 1 0 0 1 1 0 1 1 1 1 0 1 1 1 1 0 1 0 1<br />0 1 3 6 7 9 10 11 12 14 15 16 17 19 21</pre>
+                <p>We can then use those indices (converted to numbers) to select out the desired element from the Churn column.</p>
+                <pre>(I. no_inds) { _1 col df</pre>
+                <pre>┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬...
+│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│...
+└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴...</pre>
+                <p>Alternatively, you can mask the array. To be honest, I'm not completely sure how this works, since it's using the dyadic version of <code>#</code> which copies values. I think it makes 0 or 1 copies depending on the mask value which acts as a selection into the right hand argument.</p>
+                <pre>no_inds # _1 col df</pre>
+                <pre>┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬...
+│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│No│...
+└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴...</pre>
+                <p>As I've been working through this analysis, I've been really wanting to build a verb that acts like a Python Counter. It took quite some time and engineering, behold.</p>
                 <pre>counter =: monad : '(|: ,: (, ~. y)) ,. (> < each |: ,: (#/.~ y))'<br />counter _1 col df<br />
 ┌───┬────┐
 │No │5174│
 ├───┼────┤
 │Yes│1869│
 └───┴────┘</pre>
-                <p>You have to box the input to counter</p>
+                <p>You have to box the input to counter using <i>box each</i> <code>;/</code>.</p>
+                <pre>;/ i. 10
+┌─┬─┬─┬─┬─┬─┬─┬─┬─┬─┐
+│0│1│2│3│4│5│6│7│8│9│
+└─┴─┴─┴─┴─┴─┴─┴─┴─┴─┘</pre>
+                <p>We generate 2000 random numbers <code>?</code> between 0 and 10 and count the distribution.</p>
                 <pre>counter ;/ ? 2000 # 10
 ┌─┬───┐
 │3│212│
@@ -120,6 +192,7 @@ Churn  </pre>
 ├─┼───┤
 │6│184│
 └─┴───┘</pre>
+                <p>Counter also applies to various data types.</p>
                 <pre>counter ;/ 'a really long sentence'
 ┌─┬─┐
 │a│2│
@@ -146,14 +219,66 @@ Churn  </pre>
 ├─┼─┤
 │c│1│
 └─┴─┘</pre>
+                <p>Ok, let's take a small detour to figure out how that verb works. It's long and complicated (and a little brittle). I would love <a href="https://twitter.com/andrew_n_carr">feedback</a> from J gurus of how to do it better.</p>
+                <pre>counter =: monad : '(|: ,: (, ~. y)) ,. (> < each |: ,: (#/.~ y))'</pre>
+                <p>J is read from right to left. Operator precedence can be set using parenthesis. There are two parts to this verb, separated by the <i>stitch</i> verb <code>,.</code></p>
+                <p>The first main piece on the far right.</p>
+                <pre>#/.~ y</pre>
+                <p>This gets a count of the unique items in the argument <code>y</code>. This is then passed through a verb <code>,:</code> that unsqueezes an additional dimension, so something that is size [42] would be size [1 42]. After which we transpose using <code>|:</code>.</p>
+                <p>While working through each piece in this explanation, I drastically simplified the definition of <code>counter</code>.</p>
+                <pre>counter =: monad : '(~. y) ,. (> < each (#/.~ y))'</pre>
+                <p>Now, we 'box' each element of the unique counts with <code><</code> and then remove the extra outer box.</p>
+                <pre>< each (#/.~ 1 col df)
+┌──────┬──────┐
+│┌────┐│┌────┐│
+││3488│││3555││
+│└────┘│└────┘│
+└──────┴──────┘</pre>
+                <pre>> < each (#/.~ 1 col df)
+┌────┬────┐
+│3488│3555│
+└────┴────┘
+                </pre>
+                <p>We then stitch that output with the left hand operation. This operation <code>~.</code> gives the names of the unique items in a collection.</p>
+                <pre>~. 1 col df
+┌──────┬────┐
+│Female│Male│
+└──────┴────┘
+                </pre>
+                <p>By stitching we have the desired output in a readable boxed format.</p>
+                <pre>counter 1 col df
+┌──────┬────┐
+│Female│3488│
+├──────┼────┤
+│Male  │3555│
+└──────┴────┘</pre>
+                <p> It does require that non-dataframe input is boxed (using <code>;/</code> or <code>> < each</code> as your preference.), as mentioned above. I just realized, this actually means you can replace <code>> < each</code> in the definition of counter with <code>;/</code></p>
+                <pre>counter =: monad : '(~. y) ,. (;/ (#/.~ y))'</pre>
+                <p>Alright, that was a fun tangent, let's finish up with a few plots from the data set.</p>
+                <p>We start by counting the number of churn vs non churn customers and plotting them as a bar chart.</p>
                 <pre>'bar; xlabel No , Yes; title Churned Customers' plot > 1 {"1 counter _1 col df</pre>
                 <img src="blog_files/churn_bar1.png" />
-
+                <p>We should do a few group by cohort style analysis to see if specific groups churn more or less often than others.</p>
                 <p>I tried a number of ways to make a stacked or side by side bar chart. I couldn't quite get it to work though. </p>
                 <img src="blog_files/failed_male_female_bar.png" />
                 <p>So I used a pie chart. Don't judge my data visualization sensibilities too harshly, it still communicates the information that Males and Females don't have noticeably different amounts of churn. To test this properly, we would need to set up a rigorous hypothesis test, which I may attempt in a future article.</p>
                 <pre>'pie; color red,black; xlabel No Yes; title Male Female' plot |: (> (1 {"1 (counter ((< 'Male') E. 1 col df) # (_1 col df)))) ,. (> (1 {"1 (counter ((< 'Female') E. 1 col df) # (_1 col df))))</pre>
                 <img src="blog_files/male_femal_churn.png" />
+                <p>Interestingly, you can see that there is a difference in senior and non senior citizens. This implies that senior citizens are less likely to churn, or actually they churn less often. Further analysis into lifetime value may show that seniors are quite a valuable demographic because of the relatively lower churn rate.</p>
+                <img src="blog_files/senior_non_churn1.png" />
+                <p>I wonder, if something less "demographic" would be even more insightful. There is a column 'contract' which describes what kind of contract each customer is engaged in.</p>
+                <pre>   counter 15 col df
+┌──────────────┬────┐
+│Month-to-month│3875│
+├──────────────┼────┤
+│One year      │1473│
+├──────────────┼────┤
+│Two year      │1695│
+└──────────────┴────┘</pre>
+                <p>My hypothesis is that there will be more churn on Month-to-month contracts. If that is the case, then an <i>actionable</i> insight would be to try and convert Month-to-month users to more long term contracts. Potentially increasing their lifetime value.</p>
+                <img src="blog_files/contract_churn1.png" />
+                <p>This image mostly confirms my hypothesis. We should look into the up and cross selling programs to determine if there are some frictions that can be removed in converting from Month-to-month to a longer term contract.</p>
+                <p>In general, working with J is mind-expanding. I'm not nearly as fast as I am in Python, but it's such a blast.</p>
 <!-- (|: ,: (, ~. _1 col df)) ,. (> < each |: ,: (#/.~ _1 col df)) -->
                <p></p> 
 
