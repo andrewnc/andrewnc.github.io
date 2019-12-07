@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2019-12-03">03 Dec 2019</time> </span>
+            <h2 class="post-title"><a href="/blog/monte_pi_hy.html">Monte Carlo integration in Hylang</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                    <p><a href="https://en.wikipedia.org/wiki/Alan_Kay">Alan Kay</a> said that Lisp is <blockquote> greatest single programming language ever designed.</blockquote>
+                    With all the attention it has received, it's hard to argue that Lisp is an esoteric programming language. This "LISt Processing" language has many implementations,
+                    but one main constants is that the line between code and data is <a href="http://www.defmacro.org/ramblings/lisp.html">blurred</a>. This makes it a <blockquote>programmable programming language.<sup><a href="#note1">1</a></sup></blockquote>
+                    </p>
+
+                    <p>The purpose of this article is not to talk about Lisp. I am not expert, and there is a vast literature on the subject from many bright minds. The true point of this post
+                        is to talk about a specific Lisp: <a href="https://github.com/hylang/hy">Hylang</a>.
+                    </p>
+                    <img src="http://docs.hylang.org/en/stable/_images/hy-logo-small.png" />
+                    <p>Hy is a Python Lisp! It is a Lisp that is "embedded" in Python. More specifically, from the Hy homepage<sup><a href="#note2">2</a></sup><blockquote>Since Hy transforms its Lisp code into the Python Abstract Syntax Tree, you have the whole beautiful world of Python at your fingertips, in Lisp form!</blockquote></p>
+                    <p>This means you can gain many of the benefits of a Lisp, while having access to the vast Python data science library. There are some drawbacks to this method, but in general it's an exciting and extremely satisfying little language.</p>
+                    <p>To showcase some of the joy of Hy, we'll be estimating the value of &#960 using Monte Carlo integration. This isn't necessarily a data science task, but it is an interesting bit of mathematics, and complicated enough to need some interesting code.</p>
+                    <h3>First, the math</h3>
+                    <p>Because we know the area of a circle of radius $r$ is $A = \pi r^2$ we can estimate $\pi$ by computing the area of the unit circle. This amounts to uniformly sampling points in a certain domain around the unit circle. The percentage of points in the circle gives a good approximation of how much of the domain is taken up by the circle. We can then multiply that percentage by the total area of the domain to get an estimate for the circle's area, and thereby estimating pi.  </p>
+                    <p>We can do this estimate of &#960 by formulating an integral problem, which we later discretize. We first define $f : \mathbb{R}^2 \rightarrow \mathbb{R}$
+                        $$f(x) =
+                        \begin{cases}
+                        1,  & \text{if $||x||_2 < 1$} \\[2ex]
+                        0, & \text{otherwise}
+                        \end{cases}$$
+                    We then let $\Omega = [-1,1] \times [-1,1]$ be the unit square and our estimate can be obtained through
+                        $$\int_{-1}^1 \int_{-1}^1 f(x,y) dx dy = \pi$$
+                    </p>
+                    <h3>Now, the code</h3>
+                    <p>We can now start writing some Hy.</p>
+                    <p>Like most Lisps, Hy has brackets galore, but after some time this syntax is quite lovely. Most imperative code we're used to seeing uses Infix notation. Lisp uses something <i>similar</i> to Prefix notation, but not exactly. It's truly unique.</p>
+                    <pre>(+ 1 1)<br />>2</pre>
+                    <pre>(lfor x (range 10) (+ 3.14 x))<br />>[3.14, 4.14, 5.14, 6.14, 7.14, 8.14, 9.14, 10.14, 11.14, 12.14]</pre>
+                    <pre>(setv result (- (/ (+ 1 3 88) 2) 8))<br />(print result)<br />>38.0</pre>
+                    <p>Lisp is a wonderful way to define recursive functions. For example, if we want to sum a list, we could write a function that takes in a list, checks the base case for an empty list, then adds the first element with the sum of the rest of the list.</p>
+                    <pre>
+(defn sum_li [li]
+(cond 
+    [(empty? li) 0
+        (0)]
+    [(= (len li) 1)
+        (first li)]
+    [True
+        (+ (first li) (sum_li (list (rest li))))]
+))
+(print (sum_li [1, 2, 3, 4, 5]))
+>15
+                </pre>
+                <p>Or, since we're really writing in Python, we can use built-in functions</p>
+                <pre>(sum [1, 2, 3, 4, 5])<br />>15</pre>
+                <p>I think we're ready to dive into our Hy Monte Carlo estimation. We start with some basic imports</p>
+                <pre>(import [numpy :as np])
+(import [scipy.linalg :as la])
+(import [matplotlib.pyplot :as plt]</pre>
+                <p>We then define our function <code>monte_estimate</code> which takes in a value <code>n</code> and returns an estimate for $\pi$</p>
+                <pre>(defn monte_estimate [n]
+(setv points (np.random.uniform -1 1 :size [2 n]))
+(setv lengths (la.norm points :axis 0))
+(setv num_within 
+    (np.count_nonzero 
+        (< lengths 1)
+    )
+)
+(setv out (* 4 (/ num_within n))
+)</pre>
+                <p>There is a lot to unpack here.</p>
+                <p>We start the function by sampling random points in the unit square.</p>
+                <pre>(setv points (np.random.uniform -1 1 :size [2 n]))</pre>
+                <p>We then get the distance of each point from the center</p>
+                <pre>(setv lengths (la.norm points :axis 0))</pre>
+                <p>We count the number of lengths that are within the unit circle (less than 1). We multiply and divide to get an estimate of $\pi$</p>
+                <p>In the case of <code>n = 500</code> we can an estimate of around $3.12$ or $3.024$ as in the below. As we increase $n$ the estimate will improve.</p>
+                <img src="blog_files/500out.png" />
+                <img src="blog_files/2000out.png" />
+                <img src="blog_files/8000out.png" />
+                <p>These plots were also created in Hy, they required use of <a href="https://github.com/hylang/hy/issues/541">macros</a> to recreate the slicing ability of numpy. Below is the code for the interested.</p>
+                <pre>(import [numpy :as np])
+(import [scipy.linalg :as la])
+(import [matplotlib.pyplot :as plt])
+
+(defn parse-colon [sym]
+(list (map (fn [x]
+                (if (empty? x)
+                    None
+                    (int x)))
+            (.split (str sym) ":"))))
+
+(defn parse-indexing [sym]
+(cond
+    [(in ":" (str sym)) `(slice ~@(parse-colon sym))]
+    [(in "..." (str sym)) 'Ellipsis]
+    [True sym]))
+
+(defmacro nget [ar &rest keys]
+`(get ~ar (, ~@(map parse-indexing keys))))
+
+(defn monte_estimate [n]
+(setv points (np.random.uniform -1 1 :size [2 n]))
+(setv X (np.linspace (- np.pi) np.pi 100))
+(setv lengths (la.norm points :axis 0))
+(setv num_within 
+    (np.count_nonzero 
+        (< lengths 1)
+    )
+)
+(setv out (* 4 
+            (/ num_within n)
+            )
+)
+(plt.plot 
+    (np.sin X)
+    (np.cos X)
+)
+(setv inner_mask (< lengths 1))
+(setv outer_mask (>= lengths 1))
+(print (np.shape (nget (.transpose points) inner_mask 0)))
+(plt.scatter (nget (.transpose points) inner_mask 0) 
+                (nget (.transpose points) inner_mask 1) :color "orange")
+(plt.scatter (nget (.transpose points) outer_mask 0) 
+                (nget (.transpose points) outer_mask 1) :color "blue")
+(plt.title f"{n} points; pi = {out}")
+(plt.savefig f"{n}out.png")
+(plt.clf)
+(plt.close)
+out)
+
+(setv n 500)
+(print (monte_estimate n))</pre>
+
+                <!--Talk about why lisp is awesome  -->
+                <!-- Talk about the loveliness of Hy -->
+                <!-- Discuss what monte carlo integration is -->
+                <!-- Draw a cool picture in Hylang -->
+                <!-- Estimate the value of pi for various initial values -->
+                
+                <p  id="note1"><sup>1</sup><a href="http://www.paulgraham.com/chameleon.html">John Foderaro</a></p>
+                <p  id="note2"><sup>2</sup><a href="http://docs.hylang.org/en/stable/">Hylang Website</a></p>
+            </div> 
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
