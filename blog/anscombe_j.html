@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2019-12-09">09 Dec 2019</time> </span>
+            <h2 class="post-title"><a href="/blog/anscombe_j.html">Data Exploration in J</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                <p>Work in progress</p>
+                <p>When trying to answer questions that provide value to your organization, one of the first steps is collecting and exploring the data.</p>
+                <p>In this article, we have a data set with the following columns.</p>
+                <pre>columns df
+┌─┬───────┐
+│0│id     │
+├─┼───────┤
+│1│dataset│
+├─┼───────┤
+│2│x      │
+├─┼───────┤
+│3│y      │
+└─┴───────┘</pre>
+                <p>The values are split into a few difference clusters that are labeled "I - IV" in the dataset column.</p>
+                <pre>counter 1 col df
+┌───┬──┐
+│I  │11│
+├───┼──┤
+│II │11│
+├───┼──┤
+│III│11│
+├───┼──┤
+│IV │11│
+└───┴──┘</pre>
+                <pre>5 head df
+┌──┬───────┬────┬────┐
+│id│dataset│x   │y   │
+├──┼───────┼────┼────┤
+│0 │I      │10.0│8.04│
+├──┼───────┼────┼────┤
+│1 │I      │8.0 │6.95│
+├──┼───────┼────┼────┤
+│2 │I      │13.0│7.58│
+├──┼───────┼────┼────┤
+│3 │I      │9.0 │8.81│
+└──┴───────┴────┴────┘</pre>
+                <pre>┌─┬─┬────┬────┬──┬──┬────┬────┬──┬───┬────┬─────┬──┬──┬───┬────┐
+│0│I│10.0│8.04│11│II│10.0│9.14│22│III│10.0│7.46 │33│IV│8.0│6.58│
+├─┼─┼────┼────┼──┼──┼────┼────┼──┼───┼────┼─────┼──┼──┼───┼────┤
+│1│I│8.0 │6.95│12│II│8.0 │8.14│23│III│8.0 │6.77 │34│IV│8.0│5.76│
+├─┼─┼────┼────┼──┼──┼────┼────┼──┼───┼────┼─────┼──┼──┼───┼────┤
+│2│I│13.0│7.58│13│II│13.0│8.74│24│III│13.0│12.74│35│IV│8.0│7.71│
+├─┼─┼────┼────┼──┼──┼────┼────┼──┼───┼────┼─────┼──┼──┼───┼────┤
+│3│I│9.0 │8.81│14│II│9.0 │8.77│25│III│9.0 │7.11 │36│IV│8.0│8.84│
+├─┼─┼────┼────┼──┼──┼────┼────┼──┼───┼────┼─────┼──┼──┼───┼────┤
+│4│I│11.0│8.33│15│II│11.0│9.26│26│III│11.0│7.81 │37│IV│8.0│8.47│
+└─┴─┴────┴────┴──┴──┴────┴────┴──┴───┴────┴─────┴──┴──┴───┴────┘
+</pre>
+                <blockquote>If you're curious about the definitions of <code>columns, head, counter</code> see my previous post <a href="/blog/customer_churn_j.html">here</a></blockquote>
+                <p>I split up the data frame based on the dataset label and then look at some descriptive statistics.</p>
+                <p>We first look at the mean values for x and y for each of the 4 data sets</p>
+                <pre>┌───┬───┐
+│9.4│8.9│
+├───┼───┤
+│8.9│9.1│
+└───┴───┘</pre>
+                <pre>┌─────┬─────┐
+│7.683│7.337│
+├─────┼─────┤
+│7.504│7.593│
+└─────┴─────┘</pre>
+                <p>Then the standard deviation for x and y</p>
+                <pre>┌───────┬───────┐
+│3.20416│3.47851│
+├───────┼───────┤
+│3.47851│3.47851│
+└───────┴───────┘</pre>
+                <pre>┌───────┬───────┐
+│2.04465│2.06347│
+├───────┼───────┤
+│2.14021│2.11607│
+└───────┴───────┘</pre>
+                <p>Fascinatingly we see that all 4 datasets have <i>extremely</i> similar descriptive statistics. This is surprising, and something seems a bit off. If we run a full <code>dstat</code> on the datasets, we begin to see some difference between the datasets.</p>
+                <p>Descriptive statistics for X values</p>
+                <pre>┌───────────────────────┬───────────────────────┐
+│sample size:         10│sample size:         10│
+│minimum:              4│minimum:              4│
+│maximum:             14│maximum:             14│
+│median:             9.5│median:             8.5│
+│mean:               9.4│mean:               8.9│
+│std devn:       3.20416│std devn:       3.47851│
+│skewness:     _0.169188│skewness:     0.0881543│
+│kurtosis:       1.97835│kurtosis:       1.65537│
+├───────────────────────┼───────────────────────┤
+│sample size:         10│sample size:       10  │
+│minimum:              4│minimum:            8  │
+│maximum:             14│maximum:           19  │
+│median:             8.5│median:             8  │
+│mean:               8.9│mean:             9.1  │
+│std devn:       3.47851│std devn:     3.47851  │
+│skewness:     0.0881543│skewness:     2.66667  │
+│kurtosis:       1.65537│kurtosis:     8.11111  │
+└───────────────────────┴───────────────────────┘</pre>
+                <p>Descriptive statistics for Y values</p>
+                <pre>┌───────────────────────┬──────────────────────┐
+│sample size:         10│sample size:        10│
+│minimum:           4.26│minimum:           3.1│
+│maximum:          10.84│maximum:          9.26│
+│median:            7.81│median:           8.12│
+│mean:             7.683│mean:            7.337│
+│std devn:       2.04465│std devn:      2.06347│
+│skewness:     _0.260857│skewness:     _1.01039│
+│kurtosis:       2.35098│kurtosis:      2.74257│
+├───────────────────────┼──────────────────────┤
+│sample size:       10  │sample size:       10 │
+│minimum:         5.39  │minimum:         5.25 │
+│maximum:        12.74  │maximum:         12.5 │
+│median:          6.94  │median:         7.375 │
+│mean:           7.504  │mean:           7.593 │
+│std devn:     2.14021  │std devn:     2.11607 │
+│skewness:     1.51232  │skewness:     1.14784 │
+│kurtosis:     4.65251  │kurtosis:     3.95088 │
+└───────────────────────┴──────────────────────┘</pre>
+                <p>By just looking at these values, it seems that each dataset is distributed very similarly. Let's do a simple linear regression and see if we can fit the data differently given the variance in <i>skew</i> and <i>kurtosis</i>.</p>
+                <p>We hope to solve an equation of the following form.</p>
+                <p>$$AX = B$$</p>
+                <p>Where $A$ is a matrix of our x values, augmented with a column of 1's to account for an intercept term.</p>
+                <p>$B$ on the other hand, is a vector of our y values.</p>
+                <p>We'll first write two monadic verbs to get these matrices for an arbitrary dataset.</p>
+                <pre>get_A =: 3 : '((# (2 col y)) # 1) ,. (2 col y)'</pre>
+                <pre>get_B =: 3 : '3 col y'</pre>
+                <p>The <code>get_B</code> verb is straight forwardly selecting the proper column. However, <code>get_A</code> is a little more complicated.</p>
+                <p>Since J is read from right to left, we'll start that way in breaking this verb apart. <code>(2 col y)</code> selects the $2^{nd}$ column which is then concatenated column wise via <code>,.</code> with a vector of 1's of the length of our column. <code># (2 col y)</code> gets an integer length and the dyad <code>x # y</code> repeats y, x times.</p>
+                <p>So for the first dataset, our $A$ matrix looks like the following.</p>
+                <pre>get_A df1
+1 10
+1  8
+1 13
+1  9
+1 11
+1 14
+1  6
+1  4
+1 12
+1  7</pre>      <p>We now write a regression verb (no longer using a one-line syntax) that solves for $X$.</p>
+                <pre>reg =: 3 : 0
+    A =: get_A y
+    B =: get_B y
+    X =: B %. A
+    X
+)</pre>
+                <p>We can then get the intercept and slope values from the regression for each dataset. Fascinatingly, they are all extremely similar.</p>
+                <pre>reg df1
+> 2.90182 0.508636
+reg df2
+> 2.9894 0.488494
+reg df3
+> 3.00791 0.505179
+reg df4
+> 3.08253 0.495657</pre>
+                <p>At this point in the data exploration process, things are starting to get a little weird. The descriptive statistics of each dataset, along with the regression coefficient unintuitively imply that each of the 4 datasets is very similar.</p>
+                <p>Let's write a verb that plots the regression line on top of a scatter plot of the actual data.</p>
+                <pre>plot_quartet =: 4 : 0
+    pd 'reset'
+    pd 'type line'
+    pd ((1 { y) * i. 20) + (0 { y)
+    pd 'pensize 3.5; type point'
+    pd (2 col x);(3 col x)
+    pd 'show'
+)</pre>
+                <pre>df1 plot_quartet (reg df1)
+df2 plot_quartet (reg df2)
+df3 plot_quartet (reg df3)
+df4 plot_quartet (reg df4)</pre>
+                <div class="grid2x2">
+                    <div><img src="blog_files/anscombe_1.png" /></div>
+                    <div><img src="blog_files/anscombe_2.png" /></div>
+                    <div><img src="blog_files/anscombe_3.png" /></div>
+                    <div><img src="blog_files/anscombe_4.png" /></div>
+                </div>
+                <p>Well, there you have it. <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe's Quartet</a>. Many common data exploration methods failed to reveal the strange shape of this dataset. Be careful out there! Data is slippery, and you can't always trust your first impressions.</p>
+            </div> 
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
