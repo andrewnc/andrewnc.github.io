@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2019-12-20">20 Dec 2019</time> </span>
+            <h2 class="post-title"><a href="/blog/central_tendency_pony.html">Measures of central tendency in Pony</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                <p>When looking into the geometry and shape of your data you often want to know information about the middle or center of the data. There are many measures of centrality each with different pros and cons. We'll talk about how to calculate them, and when you may want to use them. </p>
+                <p>Pony is an exciting language that fulfils an interesting niche.</p>
+                <img src="blog_files/pony_logo.png" />
+                <p>It is a type safe, object oriented, actor based language. It compiles to native code and gives a whole host of <a href="https://www.ponylang.io/discover/">guarantees</a> when writing concurrent code that make it very attractive.</p>
+                <p>The syntax looks quite readable and the code compiles and runs fairly quickly.</p>
+                <pre>actor Main
+new create(env: Env) =>
+    env.out.print("Hello, World!")</pre>
+                <p>This snippet defines an <i>Actor</i>, which is kind of like an asynchronous class where <i>Behaviors</i> are asynchronous methods.</p>
+
+                <pre>use "collections"
+use "format"
+
+actor Main
+    fun disp(v: I32, fmt: FormatInt = FormatDefault): String =>
+        Format.int[I32](v where width = 1, align = AlignRight, fmt = fmt)
+    new create(env: Env) =>
+        for i in Range[I32](0, 10) do
+        env.out.print(disp(i))
+        
+        end
+        env.out.print(disp(1+1))</pre>
+            </div> 
+
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
