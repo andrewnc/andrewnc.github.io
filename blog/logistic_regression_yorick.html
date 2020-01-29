@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2020-01-29">29 Jan 2020</time> </span>
+            <h2 class="post-title"><a href="/blog/logistic_regression_yorick.html">Logistic Regression in Yorick</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                <blockquote> (takes the skull) Alas, poor Yorick! I knew him, Horatio, a fellow of infinite jest, of most excellent fancy. He hath borne me on his back a thousand times, and now, how abhorred in my imagination it is! My gorge rises at it.</blockquote>
+                <p>-Hamlet: Act 5 Scene 1 Page 8</p>
+                <img src="blog_files/skull-banner.png" />
+                <p>Welcome back! In this post we'll be exploring another array based language. However, unlike <a href="/blog/first_plot_j.html">J</a> this language is not packed into as few characters as possible.</p>
+                <p>Yorick was created by physicist <a href="https://en.wikipedia.org/wiki/David_H._Munro">David Munro</a> in 1996 at Lawrence Livermore national lab. It was designed for numerical computation and mathematical simulation. It was fairly easy to install and has a nice C-like syntax.</p>
+                <p>You simply fire up the repl and can start coding</p>
+                <pre>$ yorick
+Copyright (c) 2005.  The Regents of the University of California.
+All rights reserved.  Yorick 2.2.04x ready.  For help type 'help'
+> 
+                </pre>
+                <pre>> print, "Hello, World!"<br />Hello, World!</pre>
+                <p>My first order of business was to see if I can plot something. I ran <code>> plg, random(2)</code>. The docs suggested that a graphics window should open and display the desired plot.</p>
+                <p>I spent a few hours trying to get this to work with little success. I opened an issue on Github and decided to cheat a little. I wrote my own simple plotting utility.</p>
+                <pre>func plot(a, b){
+    file = text_csv("data_file.csv", a, b);
+    close,file
+    // system, "scatter --f data_file.csv";
+    system, "python3 plot.py data_file.csv";
+}
+</pre>
+                <p>Yes, yes, I know. I wrote a python file that reads a csv (written to via Yorick's <code>text_csv</code> function) and plots the contents. I have no illusions of scalability, I just wanted something a bit quick.</p>
+                <p>It's really unfortunate I couldn't get plotting to work natively, there is a large body of work online that suggests Yorick's plotting is top notch. If any of my readers have a solution, it would be greatly appreciated.</p>
+                <p>However, other than this small hiccup, coding in Yorick was a joy.</p>
+                <h4>Logistic Regression</h4>
+                <p>Imagine you are a young data scientist, cleaning data like a digital detergent, fitting regression lines left and right when you come across a problem. What is the likelihood that a physical therapy patient has back pain given a number of measurements?</p>
+                <p>Not to fear, you are armed with regression!</p>
+                <p>$$y = Wx + b$$</p>
+                <p>You solve for $W$ via gradient descent, or use an <a href="https://en.wikipedia.org/wiki/Ordinary_least_squares">exact solution</a>... but then you look back at the problem statement and see that you need "likelihood".</p>
+                <p>Well, you likely remember that likelihood is a synonym for probability. How do we get probabilities? That's where the logistic part of logistic regression comes in to play.</p>
+                <p>The logistic function $f: \mathbb{R} \to [0,1]$ $$\frac{1}{1 + e^{-x}}$$ can be used to interpret real values as probabilities.</p>
+                <p>In our case, we take the beautiful equation from above $y = Wx+b$ and wrap it in a logistic function to obtain probabilities. $$\frac{1}{1 + e^{-(Wx + b)}}$$</p>
+                <p>Boom, so by using that equation we can get the likelihood of someone having back pain (yes or no) given a number of measurements.</p>
+                <h4>The code!</h4>
+                <p>We'll start by including our hand made plotting function, and a linear regression utility</p>
+                <pre>#include "plot.i"
+#include "regress.i"
+</pre>
+                <p>We then need to read in our data, Yorick makes this process extremely simple.</p>
+                <pre>df = text_cells("back_pain_data.csv", ",")(1:-1,);</pre>
+                <p>Here we are slicing off the last column which is not useful for our purposes. Something important to note, and disappointing for me is that Yorick is 1-indexed.</p>
+                <pre>> a = random(10)
+
+> print, a
+[0.0891647,0.0719207,0.739632,0.191635,0.350893,0.597056,0.420973,0.608159,
+0.607138,0.0986435]
+> a(0)
+0.0986435
+> a(1)
+0.0891647
+> a(-1)
+0.607138
+</pre>
+                <p>Many high powered scientific languages are 1-indexed, so the choice makes sense.</p>
+                <p>I then decided that the built in <code>numberof</code> function was insufficient. It returned a full count (similar to <code>#</code> in J) of all the items in this list.</p>
+                <p>So I wrote a small utility <code>shape</code> function for working with 2-d arrays. Again, it doesn't scale very well, but it worked for my purposes.</p>
+                <pre>func shape(df){
+    if(numberof(df) > 0){
+        return [numberof(df(1,)), numberof(df(,1))];
+    }
+}</pre>
+                <p>This allowed me to see row and column information of the newly created dataframe</p>
+                <pre>> shape(df)
+[310,13]</pre>
+                <p>Excellent! I spent several hours trying to figure out how to cast strings to integers. I felt so silly, I scoured the documentation (or so I thought) and couldn't find anything.</p>
+                <p>I brought this up to some colleagues, and within 3 minutes they had found the <code>tonum</code> function... That's what I get for coding instead of sleeping, lesson learning.</p>
+                <p>We can now cast various columns of <code>df</code> no numeric types with no trouble. I started by converting the proper labels to a binary representation.</p>
+                <pre>/* convert the labels to binary digits*/
+df(0,)(where(df(0,) == "Normal")) = "0"
+df(0,)(where(df(0,) == "Abnormal")) = "1"
+df = tonum(df)</pre>
+                <p>This takes the last column and sets the values according to a where criterion. The <code>where( == )</code> function returns a mask that we can use to index into our list.</p>
+                <p>I wrote another small utility function, <code>head</code>, that allows me to peak at the array.</p>
+                <pre>func head(df){
+    print, df(, 1:6)
+}</pre>
+                <pre>> head, df
+[[63.0278,22.5526,39.6091,40.4752,98.6729,-0.2544,0.744503,12.5661,14.5386,
+15.3047,-28.6585,43.5123,1],[39.057,10.061,25.0154,28.996,114.405,4.56426,
+0.415186,12.8874,17.5323,16.7849,-25.5306,16.1102,1],[68.832,22.2185,50.0922,
+46.6135,105.985,-3.53032,0.474889,26.8343,17.4861,16.659,-29.0319,19.2221,1],
+[69.297,24.6529,44.3112,44.6441,101.868,11.2115,0.369345,23.5603,12.7074,
+11.4245,-30.4702,18.8329,1],[49.7129,9.65207,28.3174,40.0608,108.169,7.9185,
+0.54336,35.494,15.9546,8.87237,-16.3784,24.9171,1],[40.2502,13.9219,25.1249,
+26.3283,130.328,2.23065,0.789993,29.323,12.0036,10.4046,-1.51221,9.6548,1]]</pre>
+                <p>For the curious, the column values are</p>
+                <pre>["pelvic_incidence","pelvic tilt","lumbar_lordosis_angle","sacral_slope","pelvic_radius","degree_spondylolisthesis","pelvic_slope","Direct_tilt","thoracic_slope","cervical_tilt","sacrum_angle","scoliosis_slope","Status"]</pre>
+                <p>I'm not going to focus on what each column represents in this post, but in general they are physical measurements relating to the back and body.</p>
+                <p>We're in the home stretch now. We just need to split our independent and dependent variables.</p>
+                <pre>y = df(0,)
+x = df(1:-1,)</pre>
+                <p>I tried for quite some time to shuffle the data, I even wrote a shuffle function that I was pretty proud of:</p>
+                <pre>func randint(low, high, n){
+    return floor(low + (high - low) * random(n))
+}
+
+func shuffle(li_in){
+    li = li_in
+    for(i=1;i < numberof(li);i++){
+        r = sread(totxt(i + (randint(0,numberof(li)+3,1)(1) % (numberof(li) - i))), "i")
+        tmp=li(i) 
+        li(i)=li(r) 
+        li(r)=tmp 
+    }
+    return li
+}</pre>
+                <p>However, the <code>sread</code> function was being a bit finicky, and would only spit out "doubles" and I needed a "long" to index into the array properly. So I decided not to pursue that further.</p>
+                <p>So in this analysis, performance will purely be measured on the training set, which is generally bad practice, so we won't really be able to measure generalization of our model.</p>
+                <p>However! In spite of the small set back, we can now find our $W$ values using the build in OLS regression function.</p>
+                <pre>w = regress(y, grow(transpose(x), 1))</pre>
+                <p>We include a column of 1s on the end to account for the bias term.</p>
+                <p>We can then run inference by using these weights.</p>
+                <pre>func infer(x_i, w){
+    x_i = grow(transpose(x_i), 1)
+    y_hat = x_i(,+) * w(+)
+    return (1 / (1 + exp(-y_hat)))
+}</pre>
+                <p>These three lines add a column of 1s to the data we want to infer. Then we do an element wise dot product. Yorick allows us to specify which dimension operations occur on with a <code>(+)</code> symbol and commas. </p>
+                <p>We then return the logistic value for the data, which will likely be an array if you are working with more than a single data point. </p>
+                <p>The output of this function is a collection of probabilities which can be used as you see fit. I decided to threshold them for classification, just to showcase.</p>
+                <pre>y_hat(where(y_hat > .61)) = 1
+y_hat(where(y_hat < .61)) = 0</pre>
+                <p>Then, if we run this on our training data, we see</p>
+                <pre>[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+[1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0,1,1,0,1,1,1,0,0,1,0,0,1,1,0,0,
+0,1,1,0,0,0,1,1,0,1,1,1,1,1,0,1,0,0,0,1,1,1,1,0,0,1,0,1,0,0,1,0,1,0,1,1,0,1,1,
+0,0,0,0,0,0,0,1,1,1,1,0,0,1,0,1,0,0,1,0,0,0,0,1,1,0,1,0,1,1,0,0,1,1,0,1,0]</pre>
+                <p>Which can be summarized using an accuracy function</p>
+                <pre>
+func accuracy(y, y_hat){
+    return tonum(totxt(sum(y_hat == y))) / tonum(totxt(numberof(y)))
+}</pre>
+                <p>> print(accuracy(y, y_hat))<br />0.816</p>
+                <h4>Wrapping up</h4>
+                <p>In conclusion, I enjoyed Yorick somewhat. I felt its type system was far too Dynamic for my taste. I often found myself confused at the type of object returned or expected by various functions. However, there are a number of really great utilities for working with numerical data in a scientific computing setting. It's definitely a language I'll try again sometime.</p>
+                
+                
+
+
+                
+            </div> 
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
