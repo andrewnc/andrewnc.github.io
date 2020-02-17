@@ -123,15 +123,15 @@
 (function (distribution-pdf (beta-dist α β))
         #:color i #:label (format "Beta(~a,~a)" α β)))
 #:x-min 0 #:x-max 1 #:y-max 4 #:y-label "density")</pre>
-                <p>We decide which page to show the customer based on the <code>argmax</code> of the expected value of the distributions. As the wins and losses get updated for each page, we are more and more likely to show the better page to more customers. This means we lose less revenue and converge more quickly to the solution.</p>
+                <p>We decide which page to show the customer based on the <code>argmax</code> of a sample from the distributions. As the wins and losses get updated for each page, we are more and more likely to show the better page to more customers. This means we lose less revenue and converge more quickly to the solution.</p>
                 <pre>(require math/statistics)
 (require math/distributions)</pre>
-                <pre>> (mean (sample (beta-dist 1 2) 100))
-0.3574307559832243
-> (mean (sample (beta-dist 8 2) 100))
-0.8070772970353356
+                <pre>> (sample (beta-dist 1 2) 1)
+'(0.6114587730090492)
+> (sample (beta-dist 8 2) 1)
+'(0.923843252995317)
 </pre>
-                <p>Where the parameters to the <code>beta-dist</code> function are ordered $(\alpha, \beta)$ wins vs losses. The argmax gives the higher probability $.8$ in this case and we can choose that page to serve.</p>
+                <p>Where the parameters to the <code>beta-dist</code> function are ordered $(\alpha, \beta)$ wins vs losses. The argmax chooses the higher probability $.9$ from page A, in this case, and we can choose that page to serve.</p>
                 <h4>Wrapping up</h4>
                 <p>In the end, we have a few lines of decision making code based on sound probabilistic principles (see stanford pdf for convergence guarantees) we can increase the revenue for our rainforest organization and allow customers to make more informed purchasing decisions. Running this decision making code online for the above pages we converged to page A in a few hundred trials instead of the thousands necessary before.</p>
                 
