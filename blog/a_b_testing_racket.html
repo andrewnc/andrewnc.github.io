@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2020-02-17">17 Feb 2020</time> </span>
+            <h2 class="post-title"><a href="/blog/a_b_testing_racket.html">Better A/B testing with Racket</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                <p>Racket is a scheme (read lisp) that is not at all esoteric. It's well known in the lisp communities and is often used in programming pedagogy. But! It's not often explored in the context of data analytics and data science. Plus, it's my blog, and I wanted to learn Racket.</p>
+                <p>Lisps broadly, and Racket specifically, are often considered languages for brainiacs. <a href="https://gist.github.com/lenards/3739917">Greybeards</a> in dungeons of programming knowledge casting arcane spells surrounded by endless parentheics ().</p>
+                <p>I'm not here to refute that claim, but there are some truly amazing <a href="https://beautifulracket.com/appendix/why-racket-why-lisp.html">things</a> you can do with Racket. I want to explore, broadly, the benefits of language expressiveness when working in data science.</p>
+                <p>Racket has often been lauded as a phenomenal tool for translating thought into code. Because of the <a href="https://en.wikipedia.org/wiki/Homoiconicity">homoiconicity</a> (data and code are both lists), there is a good chance data science exploration will work extremely well in the lisp paradigm.</p>
+                <h4>Why A/B test? What are A and B?</h4>
+                <p>Imagine you are a data scientist for a large e-commerce organization named after a massive rainforest. <strong>Congo</strong>. Your organization has huge marketshare in the online shopping industry. However, you believe changes to the product page can increase purchases and thereby drive more revenue to the company.</p>
+                <img src="blog_files/a:b_out1.png" />
+                <p>You think the current design <strong>B</strong> is hurting customer conversion because the call-to-action ($$$) comes before the information. Therefore, your customers are not able to make an informed decision.</p>
+                <p> It's now time to test this hypothesis.</p>
+                <h4>The simple way</h4>
+                <p>The simple way may be the easiest way initially. You get the go ahead from management to run your test over the next 2 weeks. You work with engineering to build a system that routes people randomly based on a coin flip.</p>
+                <img src="blog_files/a:b_out_routing1.png" />
+                <p>After the 2 weeks are up, you start combing through the data to see what you can find.</p>
+                <pre>(require data-science)</pre>
+                <a href="https://github.com/n3mo/data-science">- racket data science package</a>
+                <pre>(define A (read-csv "./page_1.csv" #:->number? #t))
+> head page_1.csv
+"data"
+0.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+                </pre>
+                <pre>(define B (read-csv "./page_2.csv" #:->number? #t))
+> head page_2.csv
+"data"
+0.0
+1.0
+1.0
+1.0
+0.0
+1.0
+1.0
+1.0
+1.0
+                </pre>
+                <p>We know that a <code>1.0</code> corresponds to a customer buying the product on that page, and a <code>0.0</code> means they left without buying. There are some additional complications that we are ignoring for example purposes. For example what if a customer comes back later and buys the item?</p>
+                <p>If we look at the sorted counts of our method, we see that page A has more <code>1.0</code> values and should be deployed to the site instead of page B.</p>
+                <pre>> (sorted-counts ($ A 'data))
+'((0.0 1725) (1.0 3275))
+
+> (sorted-counts ($ B 'data))
+'((0.0 2198) (1.0 2802))
+</pre>
+                <p>This works fine, however there are some potential problems.</p>
+                <ol>
+                    <li>It took 2 weeks to figure this out</li>
+                    <li>What about lost revenue for every customer that went to B?</li>
+                </ol>
+
+
+                <h4>There's a better way</h4>
+                <p>It turns out that A/B testing can be modeled as a multi-armed bandit problem.</p>
+                <img src="blog_files/a:b_bandit1.png" />
+                <p>Which can be solved via a number of reinforcement learning techniques. The basic idea is that each arm of the bandit gives a certain reward when pulled. For example, the first arm might give you 10 while the second gives 1 and the third gives 25.</p>
+                <p>You want to maximize your expected reward over a series of finite pulls (pick number 3 m'lord). So, you want to explore the space of pulls and exploit the knowledge you gain to maximize reward.</p>
+                <p>There is some really amazing math involved and a lot of <a href="http://www.incompleteideas.net/book/the-book-2nd.html">work</a> has gone into algorithms to solve these types of problems. $$V(x) = \max_{a \in \Gamma(x)}(F(x,a)) + \beta V(T(x,a))$$ with the <a href="https://en.wikipedia.org/wiki/Bellman_equation">Bellman equation</a> and dynamic programming, which we won't explore in this post. But may cover in the future, so sign up <a href="https://forms.gle/iahqDwnmJWUfA1oL7">for post updates</a>.</p>
+                <p>Ok, how do we optimally explore and exploit? The first idea might be a greedy approach. Once you try a few pulls, you always pull the lever that gives maximum reward. This is fine in the case of a few options (2 or 3) but when the state space is huge (modern A/B testing) this method quickly falls flat.</p>
+                <p>It turns out there is a simple solution that is optimal under certain conditions.</p>
+                <h6><a href="https://en.wikipedia.org/wiki/Thompson_sampling">Thompson sampling</a></h6>
+                <blockquote>Thompson sampling is an algorithm for online decision problems where actions are taken sequentially in a manner that must balance between exploiting what is known to maximize immediate performance and investing to accumulate new information that may improve future performance.</blockquote><p>- <a href="https://web.stanford.edu/~bvr/pubs/TS_Tutorial.pdf">stanford pdf download</a></a></p>
+                <p>The idea is complicated to understand, simple to implement, and powerful. We can treat each page A/B as an arm on the bandit. There is a certain underlying probability that a customer will buy or leave for each page. This can be modeled using a bernoulli distribution (coin flip) with probability $p$. </p>
+                <p>We then use <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugacy</a> and the <a href="https://en.wikipedia.org/wiki/Beta_distribution">Beta distribution</a> to update our belief about the value of $p$ given observations of various customers.</p>
+                <p>Because Thompson sampling is an online algorithm, we don't have to wait 2 weeks for out method to converge. It is far more sample efficient than the naive method we tried first. Additionally, because we are optimally exploring and exploiting we lose much less revenue.</p>
+                <p>Ok, that's all well and good, but how does it actually <strong>work</strong>?</p>
+                <h4>Show me the code</h4>
+                <p>When we start the experiment, each page A/B has two associated values. </p>
+                <ul><li>number of wins</li><li>number of losses</li></ul>
+                <p>If a customer buys the product, we count that as a win.</p>
+                <p>The Beta distribution has two parameters $(\alpha, \beta)$. $$\frac{x^{\alpha - 1}(1-x)^{\beta - 1}}{B(\alpha, \beta)},$$ $$\text{ with } B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha \beta)}$$ Powerfully, we can treat $\alpha$ as the number of wins and $\beta$ as the number of losses.</p>
+                <img src="blog_files/beta.png" />
+                <pre>(plot (for/list ([α  (in-list '(1 2 3 1/2))]
+        [β  (in-list '(1 3 1 1/2))]
+        [i  (in-naturals)])
+(function (distribution-pdf (beta-dist α β))
+        #:color i #:label (format "Beta(~a,~a)" α β)))
+#:x-min 0 #:x-max 1 #:y-max 4 #:y-label "density")</pre>
+                <p>We decide which page to show the customer based on the <code>argmax</code> of the expected value of the distributions. As the wins and losses get updated for each page, we are more and more likely to show the better page to more customers. This means we lose less revenue and converge more quickly to the solution.</p>
+                <pre>(require math/statistics)
+(require math/distributions)</pre>
+                <pre>> (mean (sample (beta-dist 1 2) 100))
+0.3574307559832243
+> (mean (sample (beta-dist 8 2) 100))
+0.8070772970353356
+</pre>
+                <p>Where the parameters to the <code>beta-dist</code> function are ordered $(\alpha, \beta)$ wins vs losses. The argmax gives the higher probability $.8$ in this case and we can choose that page to serve.</p>
+                <h4>Wrapping up</h4>
+                <p>In the end, we have a few lines of decision making code based on sound probabilistic principles (see stanford pdf for convergence guarantees) we can increase the revenue for our rainforest organization and allow customers to make more informed purchasing decisions. Running this decision making code online for the above pages we converged to page A in a few hundred trials instead of the thousands necessary before.</p>
+                
+                
+            </div> 
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
