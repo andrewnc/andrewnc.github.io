@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">    
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128" height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+<div class="wrap clearfix">
+    <div class="clearfix"></div>
+        
+    <main class="content" role="main">
+
+    <article class="post">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2020-02-24">24 Feb 2020</time> </span>
+            <h2 class="post-title"><a href="/blog/json_v.html">Lyrics bot in V</a></h2>
+        </header>
+        <section class="post-content">
+            <div class="kg-card-markdown">
+                <p><a href="https://vlang.io/">V</a> is all the rage in various hacker circles. There has been quite a lot of fuss recently about this little language over promising. I'm not going to take sides, or even rehash the arguments, but I am going to explore a little bit of this fun language.</p>
+                <p>With multiple thousand stars on <a href="https://github.com/vlang/v">github</a> people are excited about the promises and potential of this language. From the landing page we see</p>
+                <p><blockquote>Simple, fast, safe, compiled language for developing maintainable software </blockquote> with claims that the language <blockquote>Compiles itself in < 1s with zero dependencies. </blockquote></p>
+                <img src="blog_files/json1.png" />
+                <p>I opted to use a pre-built version of the language. Installation was extremely easy and I had V up and running in minutes. Honestly, this was a pleasant change from some of the other languages I have been playing with recently.</p>
+                <p>The claim to fame is extremely fast built times and very small, dependency free, executables. This doesn't often matter for data science projects, but in our case we are creating a Command Line Interface (CLI) and we don't want it to take up too much space.</p>
+                <p>However, the entire language + standard library is less than 2MB and the final code (compiled) for this post is $\sim200$kb which is quite nice.</p>
+                <h4>Data acquisition pipeline</h4>
+                <img src="blog_files/json2.png" style="float:right;"/>
+                <p>The true "secret sauce" of modern data applications is not the fancy ML methods, but the data itself. In truth, with the abundance of open source tools in data science, one can achieve quite good performance with off the shelf methods. However, if your data is low quality (or non-existent) then you will have a tough time building quality data services.</p>
+                <p>In this post, we'll talk about one simple way to gather data. Through APIs and JSON.</p>
+                <h4>Jason?</h4>
+                <p>JavaScript Object Notation, otherwise known as json (J-sawn) was created in the early 2000s as a stateless interchange format. It allows applications to communicate over the wire in blobs of information.</p>
+                <p>It is a nice way to associate key-value pairs for data storage and transmission.</p>
+                <img src="blog_files/json_example1.png" />
+                <p>In this example, we have a list of all pokemon, we are just showing the best one. You could query the object and ask for its <code>id</code>, <code>name</code>, <code>weaknesses</code>, and more. In many languages this is called a <code>hash-map</code>, in others it's referred to as a <code>dictionary</code>.</p>
+                <p>V uses <code>structs</code> as the principle data structure when working with JSON.</p>
+                <pre>struct Pokemon {
+    id int
+    num string
+    name string
+    ...
+    weakness []string
+}</pre>
+                <p>As a simple example, if we had a json of people and we wanted to explore our data, we could create a struct as follows.</p>
+                <pre>struct Person{
+    name string
+    age int
+    blood_type string
+}</pre>
+                <p>Then, when our data comes from our database <img src="blog_files/blooood.png" style="float: right; float: right;
+                    margin-top: -80px;
+                    position: relative;
+                    display: block;" /></p>
+                <pre>[{"name":"judd", "age":34, "blood_type": "o-"}, {"name": "jill", "age":46, "blood_type": "red"}]</pre>
+                <p>We can use our struct to decode the json then print out the resulting pieces in an informative way.</p>
+                <pre>import json
+
+struct Person {
+    name string
+    age int
+    blood_type string
+}
+
+fn main(){
+    s := '[{"name":"judd", "age":34, "blood_type": "o-"}, {"name": "jill", "age":46, "blood_type": "red"}]'
+
+    p := json.decode([]Person, s) or {
+        eprintln('oops')
+        return
+    }
+    for person in p {
+        println("-----")
+        println("hello ${person.name}")
+        println("you are ${person.age} years old")
+        println("your blood type ${person.blood_type} is useful to us")
+        println('')
+    }
+}</pre>
+<pre>bash-3.2$ v run person.v
+-----
+hello judd
+you are 34 years old
+your blood type o- is useful to us
+
+-----
+hello jill
+you are 46 years old
+your blood type red is useful to us</pre>
+                    <p>This is pretty great! Let's now build our little CLI</p>
+                    <h4>Muzak</h4>
+                    <p>We are going to use the <code>https://api.lyrics.ovh/v1/</code> API to get lyrics to whatever songs we like. We're then going to display those lyrics to the command line.</p>
+                    <p>V makes this easy by providing <code>http</code> and <code>flag</code> modules. We simply get the user's information from command line arguments</p>
+                    <pre>mut fp := flag.new_flag_parser(os.args)
+
+    fp.application('get_lyrics')
+    fp.version('v0.0.0.0.1')
+    fp.description('Get lyrics to your favorite song')
+    fp.skip_executable()
+
+    artist := fp.string('artist', '', 'artist which sang the song')
+    song_str := fp.string('song', '', 'song which was sung')</pre>
+                    <p>Which allows us to call the executable easily as</p>
+                    <pre>bash-3.2$ ./lyrics --artist "" --song ""</pre>
+                    <p>After we have the desired artist name and song title, we can request that from the API</p>
+                    <pre>s := http.get_text(api + artist +'/' + song_str)</pre>
+                    <p>Which we then decode</p>
+                    <pre>song := json.decode(Song, s) or {
+    eprintln('Failed to parse json')
+    return
+}</pre>
+                    <p>The song comes back in the form</p>
+                    <pre>struct Song {
+    lyrics string
+}</pre>
+                    <p>This is then parsed and printed.</p>
+                    <pre>./lyrics --artist "beach boys" --song "wouldn't it be nice"
+Wouldn't it be nice if we were older?
+Then we wouldn't have to wait so long
+And wouldn't it be nice to live together
+
+In the kind of world where we belong?
+You know it's gonna make it that much better
+
+When we can say goodnight and stay together
+
+
+
+Wouldn't it be nice if we could wake up
+...</pre>
+                    <h4>./lyrics --artist "jackson 5" --song "abc"</h4>
+                    <p>Easy as that. We now have a functioning command line application that gives the lyrics to our favorite song. From there we can <a href="https://andrewnc.github.io/projects/datavis.html">analyze</a> digram frequency, word usage, sentiment, or more! </p>
+
+
+                    <p>* Code based on top <a href="https://news.ycombinator.com/">HackerNews</a> <a href="https://github.com/BafS/hn-top/blob/master/hn.v">CLI</a></p>
+            </div> 
+        </section>
+    </article>
+    <nav class="pagination" role="navigation">
+    <!-- <span class="page-number">Page 1 of 286</span> -->
+        <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+<aside class="sidebar">
+
+<!-- Add a hire me link -->
+<h3>Resources</h3>
+
+<ul>
+    <li><a href="https://andrewnc.github.io/">About Me</a></li>
+    <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>    
+</ul>
+
+<ul>
+</ul>
+
+<p>This blog has been continuously published since 2019</p>
+
+<footer class="site-footer">
+    <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew Carr</a> © 2019<br>
+</footer></aside>
+    </div>
+       </body>
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+</script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</html>
