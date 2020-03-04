@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2020-03-04">04 Mar 2020</time> </span>
+                    <h2 class="post-title"><a href="/blog/database_dark_nim.html">Dashboarding in Dark and Nim</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <p>Two languages for the price of one?</p>
+                        <div class="row">
+                            <div class="column">
+                                <a href="https://darklang.com/"><img src="blog_files/darklogo.png" width=100 /></a>
+                            </div>
+                            <div class="column">
+                                <a href="https://nim-lang.org/"><img src="blog_files/nimlogo.svg" /></a>
+                            </div>
+                        </div>
+                        <p>In this post, we'll explore the exciting new languages Dark and Nim. I am personal extremely
+                            pleased with these two languages. They are a joy to work with and both have fast
+                            development times.</p>
+                        <p>Let's start with Dark. Dark has made the rounds on various programming forums and promises
+                            "deployless" programming.</p>
+                        <img src="blog_files/dark1.png" />
+                        <p>We started out with our own servers in data centers. Then they came for the data centers. So
+                            we went to the cloud. Then they came for our cloud servers and we moved to serverless
+                            functions. Now, they've come for our very deployments.</p>
+                        <p>I absolutely love it. Now, granted, there are likely certain use cases where
+                            Dark won't fit. But for building dashboards and monitoring systems, it's pretty awesome.</p>
+                        <hr />
+                        <p>Nim, on the other hand, is a general purpose programming language. It is statically typed,
+                            compiled, expressive, with a very friendly syntax. One of the selling points of Nim, for me, is 
+                            just how easy it is to create standalone executables that can run on many different hardware/OS.</p>
+                        <p>Nim also recently hit 1.0.0, which means it is stable. This may take it out of esolang status, 
+                            but it is nice if you are considering using it for any large project.
+                        </p>
+                        <p>I wrote the client in Nim and the backend (server?) in Dark. This development experience was
+                            definitely a joy with a few hiccups along the way.</p>
+                        <h4>- boards</h4>
+                        <p>A dashboard is a set of visualizations that deliver timely insights.</p>
+                        <p>Dashboards are a staple in modern analytics organizations. Most of the time, you'll use a
+                            domain specific technology like Tableau, Looker, or Grafana. However, there may be times
+                            when you want the flexibility of your own dashboard.</p>
+                        <p>In this post, I'll show parts of a Fitness Tracker™ dashboard I built. It contains three parts. The first is a command line tool (CLI) that records your workout and sends it to the cloud. I wrote this first piece in Nim. The second piece is the backend in Dark with a full data base and querying ability.</p>
+                        <p>The final piece is a simple HTML/JS/CSS dashboard that queries the Dark backend and plots the data. I won't go into the code for that piece, but I'll show pictures!</p>
+                        <h4>Command the lines!</h4>
+                        <pre>write(stdout, "How many minutes was your workout? -> ")
+var minutes = parseInt(readLine(stdin))
+write(stdout, "How did it feel? -> ")
+var feeling = parseInt(readLine(stdin))
+write(stdout, "Write some notes -> ")
+var notes = readLine(stdin)</pre>
+                        <p>We first prompt the user for various inputs associated with the work out. Now, I'm living on the wild side, so I don't do any input validation. I'm not usually a thrill seeker, but today is different.</p>
+                        <p>Then we store the information in a struct with a super helpful <a href="https://nim-lang.org/docs/json.html#%25%2A.m%2Cuntyped">macro</a> <code>%*</code> that allows us to create a <a href="blog/json_v.html">JSON</a> node object.</p>
+                        <pre>
+let body = %*{
+    "minutes": minutes,
+    "feeling": feeling,
+    "notes": notes
+}</pre>
+                        <p>Then, as easy as that, we shoot the JSON up into the ether and hope. At lease we can see the response status.<img src="blog_files/dark2.png" /> </p>
+                        <pre>let client = newHttpClient()
+client.headers = newHttpHeaders({ "Content-Type": "application/json" })
+let response = client.request("< url-redacted >", httpMethod = HttpPost, body = $body)
+echo response.status</pre>
+                        <p><img src="blog_files/nim_cli.gif" /></p>
+                        <h4>!Light</h4>
+                        <p>At the time of writing, Dark is in private <a href="https://darklang.com/beta">Beta</a>, but you can sign up and build cool things now. The team seems responsive and eager to help.</p>
+                        <p>As part of the vision, Dark is all written in the browser.</p>
+                        <img src="blog_files/dark3.png" />
+                        <p>It is extremely quick to prototype and follows a very <i>functional</i> style. Let's build a quick adding machine just to get a taste.</p>
+                        <p><img src="blog_files/dark4.png" /></p>
+                        <p>We create an HTTP endpoint using the finder-type-thing. You can make a number of other objects that can be composed to build the entire application.</p>
+                        <p><img src="blog_files/dark5.png" /></p>
+                        <p>We make this a GET endpoint that accepts two query parameters <code>one</code> and <code>two</code>. We have to cast these values to integers for the addition operation. This is as easy as pressing <code>Shift-Enter</code> and allowing their auto-complete to do the rest of the work.</p>
+                        <p><img src="blog_files/dark6.png" /></p>
+                        <p>Then if we pass in the proper values to our URL as query parameters <code>https://andrewnc-blog.builtwithdark.com/1/6</code> we get the desired output (please don't DDOS this URL, it may cost me a fortune).</p>
+                        <p>This output is also displayed in the browser.</p>
+                        <p>One thing I noticed while writing in Dark is that the auto-complete is nice, but <code>Tab, Space, Enter</code> all behaved differently than I had expected. Also, Dark is sometimes TOO helpful and moves my cursor when I don't expect.</p>
+                        <p>It's no Vim, but it'll get there.</p>
+                        <hr />
+                        <p>The Dark developers also are advocating for a style of development called "trace driven development" (TDD) where you start with the API endpoints you want and work backwards.</p>
+                        <p>For the fitness tracker we want a way to post from the CLI.</p>
+                        <img src="blog_files/dark7.png" />
+                        <p>The step by step of this code is</p>
+                        <ol>
+                            <li>Get the request body</li>
+                            <li>Extract the info from <code>data</code> and send it to the DB (along with Today's date)</li>
+                            <li>Generate a key</li>
+                            <li>Tell Dark where you want to write the data</li>
+                        </ol>
+                        <p>By following the TDD style we then need a <code>Fitness</code> data store.</p>
+                        <img src="blog_files/dark8.png" />
+                        <p>Easy! Now we can write data by hitting the proper endpoint with the correct JSON.</p>
+                        <p>Dark also gives amazing stack traces which means if you hover over the little grey dots on the left of the boxes, you'll see request information.</p>
+                        <img src="blog_files/dark9.png" />
+                        <p>Built in logging! That's nice.</p>
+                        <p>There are also boxes called <code>REPL</code>. These aren't actual Read, Eval, Print, Loops. They are, instead, little functions that allow you to test your end points. Very handy.</p>
+                        <p>Finally, we want a way to query the data store. So we set up a GET endpoint.</p>
+                        <img src="blog_files/dark10.png" />
+                        <p>And we can now see all the data returned as JSON (handily sorted by the date). And that's it! We have a fully functional database with multiple endpoints that is scalable, maintainable, and easy to use. With practice, you could write full, useful, CRUD applications with moderately complex business logic in Dark.</p>
+                        <p>This platform gives more power to single developer teams, imagine the cool start ups you can build, without ever messing about with server configurations again!</p>
+                        <p>You may have also noticed that Dark is functional, I like that.</p>
+                        <h4>X marks the spot</h4>
+                        <p>After our client and server are ready to go, we simply need to build a small front end. I did this using Chartist, Anime, Flexbox, and Jquery.</p>
+                        <img src="blog_files/dark11.png" />
+                        <p>We have two plots which can give insight into how many minutes I spend exercising and how I feel after each workout. Also, I have a small list of notes taken.</p>
+                        <p>Feel free to reach out if you're curious how I did the JavaScript portion of this. In the end, it was a simple query to the GET endpoint and a small amount of parsing of the returned JSON.</p>
+                        <p>That's it!</p>
+                        <p>I can now log my workouts locally, then review my fitness history where ever I may be!</p>
+                        <h4>Conclusion</h4>
+                        <p>Nim was as simple as python, but has many type checking guarantees (and it's fast!). Even though the script was short, I will definitely be writing more Nim in the future.</p>
+                        <p>Additionally, Dark holds a special place in my toolbox now. I have no doubt I'll use it to spin up more little projects like this.</p>
+                        <p>If you are resource constrained, I would seriously consider reaching for these two languages to build some amazing things.</p>
+                        <p>If you like this, <a href="https://twitter.com/andrew_n_carr">tweet at me</a> and <a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe</a> for updates on new posts.</p>
+
+                    </div>
+                </section>
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+            <!-- Add a hire me link -->
+            <h3>Resources</h3>
+
+            <ul>
+                <li><a href="https://andrewnc.github.io/">About Me</a></li>
+                <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>
+            </ul>
+
+            <ul>
+            </ul>
+
+            <p>This blog has been continuously published since 2019</p>
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew
+                        Carr</a> © 2019<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+</html>

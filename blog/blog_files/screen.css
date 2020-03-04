@@ -64,6 +64,20 @@
 /* ==========================================================================
    2. General - Setting up some base styles
    ========================================================================== */
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
 
 html {
     height: 100%;
