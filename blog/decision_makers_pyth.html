@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2020-03-29">29 Mar 2020</time> </span>
+                    <h2 class="post-title"><a href="/blog/decision_makers_pyth.html">Working with decision makers in Pyth</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <blockquote>"The fool tells me his reasons; the wise man persuades me with my own."</blockquote>
+                        <p>-Aristotle</p>
+                        <p>In any organization, data scientists will interact with decision makers. We can't live in a bubble of <a href="/blog/monte_pi_hy.html">Monte Carlo integration</a> or <a href="/blog/logistic_regression_yorick.html">Logistic Regression</a>. As much as we may want to run our models all day, without the key abilities of communication, persuasion, and listening data science can become a huge <a href="https://www.reddit.com/r/MachineLearning/comments/beoxx8/discussion_when_ml_and_data_science_are_the_death/">black hole of money</a>.</p>
+                        <p>Now, in truth, persuasive public speaking isn't easy. I've given a number of talks, presentations, demos and every time I encounter different challenges.</p>
+                        <p>I was once meeting with some decision makers about building an internal semantic code search tool with code2vec and a complex natural language interface. I had prepared all of my justifications and reasons about how much programmer time we could save. I was ready for every question. Except the obvious question.</p>
+                        <blockquote>What is the benefit over <code>ctrl-f</code>?</blockquote>
+                        - Decision maker
+                        <p>I ended up building a small demo, and we (luckily) scrapped the project. I learned some valuable lessons through that process.</p>
+                        <p>One of those lessons I am sharing today in this post.</p>
+                        <h4>Brevity<sup style="font-size: medium;"><a href="#footnote1" style="color:blue;">1</a></sup></h4>
+                        <p>Decision makers are busy people; the weight of organizational success rides on their shoulders. They don't have time for 45 pages of carefully formatted $\LaTeX$. They need answers, and they need them yesterday! At least, that's what the movies tell me.</p>
+                        <p>Either way, if there is one way to be brief, it is to write shorter code. That's where Pyth comes into play.</p>
+                        <img src="blog_files/pyth_logo.png" title="There is no official logo, so I slaved over this one" />
+                        <p><a href="https://pyth.readthedocs.io/en/latest/">Pyth</a> is a code golfing language developed for brevity. You program will take up far fewer bytes written in Pyth than in many other languages.</p>
+                        <p>In a boring language, like Python, you may write something like the following:</p>
+                        <pre>for i in range(10):
+    print(i)</pre>
+                        <p>You would then be rewarded with 0 through 9 printed to your screen. However, this incredible verbose program takes just 3 characters in Pyth</p>
+                        <pre>VTN</pre>
+                        <pre>pyth -c 'VTN'
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9</pre>
+
+
+                        <p>How's that for brevity?</p>
+                        <p>The less code you write, the less code you need to explain and maintain.</p>
+                        <h4>Pyth Basics</h4>
+                        <p>Pyth is a fully procedural language, but is often written functionally or imperatively. It is quite expressive, and has a huge number of key characters that can be used. You can try it out online <a href="http://pyth.herokuapp.com/">here</a>.</p>
+                        <p>Pyth uses prefix notation, so if you want to ask where the occurrences of a character are in a list, you would specify the list using the list operator <code>[</code> and then use the find operator <code>x</code>.</p>
+                        <pre>>>> [3 2 5 6 3 2 1 4 5 6)
+[3, 2, 5, 6, 3, 2, 1, 4, 5, 6]
+>>> x5Q
+[2, 8]</pre>
+                        <p><code>Q</code> takes and evaluates previous input lines, so it holds the value of our list.</p>
+                        <p>You can do a lot of useful things quickly in Pyth due to the design of the various operators. Say, for example, you are a student of <a href="https://en.wikipedia.org/wiki/Flipism">Flipism</a> and you have a list of decisions and you want to choose one.</p>
+                        <pre>>>> ["gym" "sleep" "game" "eat"
+['gym', 'sleep', 'game', 'eat']
+>>> O
+sleep</pre>
+                        <p>By using the <code>O</code>, random choice, operator (with an implicit <code>Q</code>) we choose to sleep.</p>
+                        <h4>Product Reviews</h4>
+                        <p>Ok, let's imagine you work for MacroHard and they've made a new gaming console. This gaming console, Xbox 2$\pi$, is set to be a hit. Over the first few months of beta testing, you have received a number of user reviews<sup><a href="http://kavita-ganesan.com/micropinion-generation/">2</a></sup>. You want to now, briefly, convince the decision makers about the trends of this product. Do people like it? What are some issues?</p>
+                        <p>We start by reading in the file and saving it to a variable.</p>
+                        <pre>>>> J'"filename.data"J
+>>> lJ
+1211</pre>
+                        <p>We now have a length $1211$ list, split by new lines from the file, which we can analyze.</p>
+                        <p>We'll do a simple analysis where we search all of the reviews for key words, we start by joining all of the values together into a single string and taking the length.</p>
+                        <pre>>>> KjdJ
+>>> lK
+107410
+>>> lcK
+21863
+</pre>
+                        <p>We have $107,410$ characters and $21,863$ words (found by using <code>c</code> to split by white space)</p>
+                        <p>We then can do a quick regex search <code>:</code> for various key words.</p>
+                        <pre>>>> l:K"good"1
+45
+>>> l:K"bad"1
+9
+>>> l:K"love"1
+20
+>>> l:K"hate"1
+6
+>>> l:K"fast"1
+10
+>>> l:K"slow"1
+3</pre>
+                        <p>With our knowledge in hand, we can return to our decision making colleagues and say that, while things aren't perfect, people seem to be enjoying the circular gaming console.</p>
+                    </div>
+                </section>
+                <hr />
+                <p id="footnote1">[1] Ok, this is mostly a joke post, but there are some nuggets of truth about the value of being brief.</p>
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+            <!-- Add a hire me link -->
+            <h3>Resources</h3>
+
+            <ul>
+                <li><a href="https://andrewnc.github.io/">About Me</a></li>
+                <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>
+            </ul>
+
+            <ul>
+            </ul>
+
+            <p>This blog has been continuously published since 2019</p>
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew
+                        Carr</a> © 2019<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+</html>
