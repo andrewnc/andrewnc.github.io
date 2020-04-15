@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2020-04-14">14 Apr 2020</time> </span>
+                    <h2 class="post-title"><a href="/blog/normalization_pointless.html">Data Normalization in Pointless</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <blockquote>“Artificial Intelligence Is Pointless without Human Intelligence.”</blockquote>
+                        <p>― Khalid Masood</p>
+                        <img src="blog_files/ptls_logo.png" />
+                        <p><a href="https://ptls.dev/">Pointless</a> was written and designed by Avery Nortonsmith as a "scripting language for fun and learning". This fun little language was created as a functional language he would have liked to learn as a beginner.</p>
+                        <p>There is a lot to like about Pointless. The name, the logo, and the functionality are all full of personality which makes it great. It is heavily inspired by the ML languages, but without a <a href="https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system">Hindley-Milner type system</a>.</p>
+                        <p>Every Pointless program terminates at a sink named <code>output</code></p>
+                        <pre>output = [1, 2, 3] |> printLine
+[1, 2, 3]</pre>
+                        <p>You also have the extremely useful pipes <code>|></code> that make writing complex code simple.</p>
+                        <p>As a small starting example. I was thinking earlier about the distribution of digits in various real numbers. Are there more even or odd digits in a real number decimal expansion?</p>
+                        <p>A Bayesian would tell you that there are $50%$ even vs odd numbers if even and odd numbers are uniformly distributed. They seem to be so distributed, at least in the natural numbers, so it may be reasonable to expect that to hold in a decimal expansion.</p>
+                        <p>I decided to learn Pointless a little better by testing this theory on $\pi$. In a <a href="/blog/monte_pi_hy.html">previous post</a> we calculated the digits of $\pi$. Now we'll just get them from the internet.</p>
+                        <p>Using <a href="https://www.piday.org/million/">this site</a> I got several hundred thousand digits of $\pi$ and stored them in a text file.</p>
+                        <p>The first task for Pointless, reading from a file.</p>
+                        <blockquote>At present, Pointless provides two input sources - lines read from stdin, and random numbers.</blockquote>
+                        <p>-<a href="https://ptls.dev/docs.html#input%20commands">https://ptls.dev/docs.html#input%20commands</a></p>
+                        <p>That's easy enough. Just call the file with <code>cat pi.txt | ptls digits.ptls</code>. That uses a custom <a href="https://www.tldp.org/LDP/abs/html/aliases.html">alias</a> I made to call the Pointless interpreter.</p>
+                        <p><code>stdin</code> is read with a number of commands. I found <code>readLines</code>, which lazily reads from <code>stdin</code>, to work quite well.</p>
+                        <pre>output = 
+    readLines 
+    |> println</pre>
+                        <p>The pipe operator is a mainstay in functional programming and it allows you to "chain" operations together. Instead of setting conditionals and loops as you would in most imperative languages, you can simply send data down the pipe. This is not universally a good idea, but it generally works well and is a fun challenge.</p>
+                        <p>After we have the digits of $\pi$ in a list, we convert each to a float.</p>
+                        <pre>output = 
+    readLines 
+    |> map(toFloat)
+    |> println</pre>
+                        <p>Then, we can perform our parity check using a custom function <code>isEven(n) = n % 2 == 0</code></p>
+                        <pre>output = 
+    readLines 
+    |> map(toFloat)
+    |> map(isEven)
+    |> println</pre>
+                        <p>This gives a list of boolean values <code>[false, false, true, false, false, false, true, true, false, false, ...</code> which, coincidentally, maps to $3.141592653$. Excellent. We then can $\Sigma$ sum these values up and divide.</p>
+                        <pre>output = 
+    readLines 
+    |> map(toFloat) 
+    |> map(isEven) 
+    |> map(toInt) 
+    |> reduceFirst(add) 
+    |> println</pre>
+                        <p>This gives us $0.49775$. Which seems to confirm our hypothesis, at least without doing something much more formal.</p>
+                        <h4>Less Strange</h4>
+                        <p>It's time for the data science portion. Normalization.</p>
+                        <p>Often times, when working with data, it may have some crazy outliers. These can be very large or very small values. On either end, they can potentially muddle the statistics of the data when performing analysis.</p>
+                        <p>Therefore, we want to Normalize the data. Or, shift it about to a more manageable state. There are a number of different normalization schemes, we'll briefly explore three here.</p>
+                        <h6>Normalize Standard Score</h6>
+                        <p>The first scheme uses population statistics for normalization. It often is used when the data is believed to be normally distributed. This is because it makes use of $(\mu, \sigma)$ parameters.</p>
+                        <p>The formula $\frac{X - \mu}{\sigma}$ operates, in 1 dimension, on our data $X$. It shifts by the mean, and scales by the standard deviation. This nice, scale invariant, method can be written in Pointless as follows.</p>
+                        <pre>mean(li) = 
+    reduceFirst(add, li) / length(li)
+
+std(li) = 
+    map(sub(mean(li)), li)
+    |> map(pow(2))
+    |> mean
+    |> pow(0.5)</pre>
+                        <p>We start by defining simple mean and standard deviation functions. We use many of the powerful standard library functions that come with Pointless and provide functional processes with which to manipulate our data.</p>
+                        <p>Then, we use these definitions to subtract the mean and divide the standard deviation.</p>
+                        <pre>normalizeStdScore(li) = 
+    map(sub(mu), li) |> map(mul((-1))) |> map(div(std(li)))
+    where {
+        mu = mean(li)
+    }</pre>
+                        <p>This shows a good and bad feature of Pointless. The good, is the <code>where</code> clause which allows us to define useful pieces of reusable code. The bad is the fact that <code>sub</code> is backwards from what I'd expect, so we have to multiply by negative $1$. </p>
+                        <pre>output =
+li
+|> normalizeStdScore
+|> println</pre>
+                        <p>This code will transform <code>[1, 2, 3, 4]</code> to <code>[-1.3416407864998738, -0.44721359549995793, 0.44721359549995793, 1.3416407864998738]</code> which can show how it is shaped. Pointless has a fun little plotting utility, but it doesn't have a y-axis scale and so it doesn't help in our understanding of scaling the data.</p>
+                        <h6>Min-Max feature normalization</h6>
+                        <p>The second method squashes all the values of your data between $[0,1]$. This is often done when you want to restrict the range of some operation. It is used in feature engineering to make a feature more robust to outliers.</p>
+                        <p>The equation $\frac{X - X_{min}}{X_{max} - X_{min}}$ again operates on our data $X$ but this time doesn't need knowledge of the population parameters. It simply uses information from the data itself.</p>
+                        <p>Again, in just a few lines of Pointless code (lol)</p>
+                        <pre>minMaxFeatureScaling(li) =
+map(sub(minVal), li) |> map(mul((-1))) |> map(div(maxVal - minVal))
+where {
+    minVal = minimum(li)
+    maxVal = maximum(li)
+}</pre>
+                        <p>we can implement Min-Max normalization.</p>
+                        <p>Now, we transform <code>[1, 2, 3, 4]</code> to <code>[-0, 0.33333333333333331, 0.66666666666666663, 1]</code> which looks closer to my intuitive grasp of normalization.</p>
+                        <h6>Quantile normalization</h6>
+                        <p>Finally, if you have a source distribution and you want to match its statistics with some target distribution for comparison (if you are controlling for socioeconomic status), then you can use quantile normalization.</p>
+                        <p>There isn't a nice equation, but you essentially sort and take the <a href="/blog/central_tendency_brat.html">average</a> of each value in the data and use that average as the new data point value.</p>
+                        <pre>quantileNormalization(li1, li2) =
+for n in range(length(li1))
+    yield (at(n, s1) - at(n, s2) / 2)
+where {
+    s1 = sort(li1)
+    s2 = sort(li2)
+}</pre>
+                        <p>This then "pulls" the statistics of <code>li1</code> to match <code>li2</code>. Notice how everything is functional and we use <code>at()</code> for list indexing.</p>
+                        <h4>And so...</h4>
+                        <p>Normalization is a very useful tool in a data scientist's tool box. It is used for feature engineering and statistical data exploration. Pointless is a fun language that makes difficult tasks simple through a clean functional workflow.</p>
+                        <p>Check out Pointless and subscribe to the email newsletter if you'd like to receive updates when I publish more posts. </p>
+                    </div>
+                    <section>
+                        <footer>
+                            <hr />
+                            <p>Also, checkout a REPL written in ruby for quick testing <a href="https://gist.github.com/allisio/133b21f709ccf5a9694e98a880dedf81">here</a></p>
+                        </footer>
+                    </section>
+
+                </section>
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+            <!-- Add a hire me link -->
+            <h3>Resources</h3>
+
+            <ul>
+                <li><a href="https://andrewnc.github.io/">About Me</a></li>
+                <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>
+            </ul>
+
+            <ul>
+            </ul>
+
+            <p>This blog has been continuously published since 2019</p>
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew
+                        Carr</a> © 2019<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+</html>
