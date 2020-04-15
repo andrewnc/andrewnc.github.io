@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 rss = """<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 
 <channel>
   <title>Andrew Carr Data Science with Esoteric Programming Languages</title>
@@ -9,6 +9,7 @@ rss = """<?xml version="1.0" encoding="UTF-8" ?>
   <description>Exploring data science problems but only using esoteric programming languages.</description>
 """
 
+base_url = "https://andrewnc.github.io"
 soup = BeautifulSoup(open("blog.html"), "html.parser")
 for val in soup.find_all("article"):
 
@@ -21,13 +22,14 @@ for val in soup.find_all("article"):
 
     rss += "<item>\n"
     rss += f"<title>{title}</title>\n"
-    rss += f"<link>{title_url}</link>\n"
+    rss += f"<link>{base_url + title_url}</link>\n"
     rss += f"<description>{description}</description>\n"
-    rss += f"<pubDate>{time}</pubDate>\n"
+    # rss += f"<pubDate>{time}</pubDate>\n"
     rss += "</item>\n"
 
 
 rss += "</channel>\n"
+rss += "<atom:link href='https://andrewnc.github.io/blog/feed.xml' rel='self' type='application/rss+xml' />"
 rss += "</rss>"
 
 with open("feed.xml", "w") as f:

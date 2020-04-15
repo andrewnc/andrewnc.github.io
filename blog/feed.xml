@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 
 <channel>
   <title>Andrew Carr Data Science with Esoteric Programming Languages</title>
@@ -7,121 +7,109 @@
   <description>Exploring data science problems but only using esoteric programming languages.</description>
 <item>
 <title>Data Normalization in Pointless</title>
-<link>/blog/normalization_pointless.html</link>
+<link>https://andrewnc.github.io/blog/normalization_pointless.html</link>
 <description>
 
 When feature engineering for a predictive task, or when exploring your data, it is often wise to normalize.
 
 </description>
-<pubDate>14 Apr 2020</pubDate>
 </item>
 <item>
 <title>Working with decision makers in Pyth</title>
-<link>/blog/decision_makers_pyth.html</link>
+<link>https://andrewnc.github.io/blog/decision_makers_pyth.html</link>
 <description>
 
 As data scientists, we regularly persuade with data. Brevity is an import aspect of persuasive speaking. Pyth is the ultimate brief language.
 
 </description>
-<pubDate>29 Mar 2020</pubDate>
 </item>
 <item>
 <title>Dashboarding in Dark and Nim</title>
-<link>/blog/database_dark_nim.html</link>
+<link>https://andrewnc.github.io/blog/database_dark_nim.html</link>
 <description>
 
 Deployless programming? Automatic updates? Code with the easy of Python and speed of C? In this post we explore building Dashboards in Dark and Nim.
 
 </description>
-<pubDate>04 Mar 2020</pubDate>
 </item>
 <item>
 <title>Lyrics bot in V</title>
-<link>/blog/json_v.html</link>
+<link>https://andrewnc.github.io/blog/json_v.html</link>
 <description>
 
 V is a fun, fast, efficient language in very early development. It has a lot of promise. In this post we explore JSON and APIs in V
 
 </description>
-<pubDate>24 Feb 2020</pubDate>
 </item>
 <item>
 <title>Better A/B testing with Racket</title>
-<link>/blog/a_b_testing_racket.html</link>
+<link>https://andrewnc.github.io/blog/a_b_testing_racket.html</link>
 <description>
 
 Racket is a favorite of academics and hackers. In this post we explore reinforcement learning and Bayesian inspired A/B testing with this fun language.
 
 </description>
-<pubDate>17 Feb 2020</pubDate>
 </item>
 <item>
 <title>Logistic Regression in Yorick</title>
-<link>/blog/logistic_regression_yorick.html</link>
+<link>https://andrewnc.github.io/blog/logistic_regression_yorick.html</link>
 <description>
 
 Learn the relation between likelihood, the logistic function, and a dynamically typed array processing language from LLNL
 
 </description>
-<pubDate>29 Jan 2020</pubDate>
 </item>
 <item>
 <title>Central Tendency in Brat</title>
-<link>/blog/central_tendency_brat.html</link>
+<link>https://andrewnc.github.io/blog/central_tendency_brat.html</link>
 <description>
 
 How do you know where the center of your data is? What is the difference between mean, median, mode, and more? Brat is a fun little language with a fascinating syntax.
 
 </description>
-<pubDate>11 Jan 2020</pubDate>
 </item>
 <item>
 <title>Data Exploration in J</title>
-<link>/blog/anscombe_j.html</link>
+<link>https://andrewnc.github.io/blog/anscombe_j.html</link>
 <description>
 
 Getting started in data science? We talk about some common strategies and pitfalls for data exploration in a fun (crazy?) array processing language.
 
 </description>
-<pubDate>09 Dec 2019</pubDate>
 </item>
 <item>
 <title>Monte Carlo integration in Hylang</title>
-<link>/blog/monte_pi_hy.html</link>
+<link>https://andrewnc.github.io/blog/monte_pi_hy.html</link>
 <description>
 
 Do you want to calculate pi in a weird way? Love Lisp + Python? In this post we use Hylang and Monte Carlo integration to calculate the value of pi.
 
 </description>
-<pubDate>03 Dec 2019</pubDate>
 </item>
 <item>
 <title>Customer Churn in J</title>
-<link>/blog/customer_churn_j.html</link>
+<link>https://andrewnc.github.io/blog/customer_churn_j.html</link>
 <description>
 
 What makes your customers leave? What makes them stay? How do you tell? We use a fancy array processing language J to answer some of these questions.
 
 </description>
-<pubDate>29 Nov 2019</pubDate>
 </item>
 <item>
 <title>First Plot in J</title>
-<link>/blog/first_plot_j.html</link>
+<link>https://andrewnc.github.io/blog/first_plot_j.html</link>
 <description>
 
 Time to first plot is a fun metric for new languages (some languages can't even plot at all). We explore plotting in J.
 
 </description>
-<pubDate>20 Nov 2019</pubDate>
 </item>
 <item>
 <title>Welcome to the Blog</title>
-<link>/blog/welcome.html</link>
+<link>https://andrewnc.github.io/blog/welcome.html</link>
 <description>
 
 </description>
-<pubDate>19 Nov 2019</pubDate>
 </item>
 </channel>
-</rss>
+<atom:link href='https://andrewnc.github.io/blog/feed.xml' rel='self' type='application/rss+xml' /></rss>
