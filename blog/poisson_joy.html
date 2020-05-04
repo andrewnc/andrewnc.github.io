@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+    <title>Andrew Carr blog</title>
+    <meta name="description" content="a blog by Andrew Carr about data science with EsoLangs">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="">
+    <link rel="apple-touch-icon" href="blog_files/blog.png">
+    <link rel="stylesheet" type="text/css" href="blog_files/screen.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/css.css">
+    <link rel="stylesheet" type="text/css" href="blog_files/defaulten.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/texme@0.7.0"></script> -->
+
+</head>
+
+<body class="home-template">
+    <!-- Theme modified from the wonderful Coding Horror blog https://blog.codinghorror.com/ -->
+
+    <header class="site-head">
+        <div class="site-head-content">
+            <a class="blog-logo" href="/blog/blog.html"><img src="blog_files/blog.png" alt="Eso Lang Logo" width="128"
+                    height="64"></a>
+            <h1 class="blog-title"><a href="/blog/blog.html">Andrew Carr blog</a></h1>
+            <h2 class="blog-description">Data science in esoteric programming languages</h2>
+        </div>
+    </header>
+
+    <div class="wrap clearfix">
+        <div class="clearfix"></div>
+
+        <main class="content" role="main">
+
+            <article class="post">
+                <header class="post-header">
+                    <span class="post-meta"><time datetime="2020-05-04">04 May 2020</time> </span>
+                    <h2 class="post-title"><a href="/blog/poisson_joy.html">Poisson Distribution in Joy</a></h2>
+                </header>
+                <section class="post-content">
+                    <div class="kg-card-markdown">
+                        <img src="blog_files/poisson1.png" />
+                        <p>In probability theory, there are several fundamental distributions that model certain systems. One of these distributions is the Poission distribution. </p>
+                        <img src="blog_files/poisson2.png" />
+                        <p>Named after the brilliant French mathematician <a href="https://en.wikipedia.org/wiki/Sim%C3%A9on_Denis_Poisson">Siméon Poisson</a> who published hundreds of seminal works during his life, this distribution is used to model event occurrence.</p>
+                        <p>This distribution has a parameter $\lambda$ which is the first moment of the distribution and represents the average number of events occurring in some given time interval.</p>
+                        <p>The density function is given as $$p(x = k) = \frac{\lambda^ke^{-\lambda}}{k!}$$</p>
+                        <p>This random looking equation is actually <a href="https://medium.com/@andrew.chamberlain/deriving-the-poisson-distribution-from-the-binomial-distribution-840cc1668239">a special case</a>of the Binomial Distribution where the number of trials is large and the probability of a success is small.</p>
+                        <h6>The use</h6>
+                        <p>There are many interesting problems that can be solved with this distribution (and its conjugate cousin <a href="https://en.wikipedia.org/wiki/Gamma_distribution">Gamma</a>). A super simple example is to model incoming phone calls to a call service center.</p>
+                        <p>If the call center is open for 12 hours every day, as a data scientist, we are interested in optimally scheduling staff to handle call demand. In a simple, contrived, example lets say we have $n_i$ phone calls in hour $i \in [6, 17]$. This could be given by a simple list <code>[3 4 2 6 8 3 4 8 3 1 2 1]</code> which, when paired with the hour gives <code>[[6 3] [7 4] [8 2] [9 6] [10 8] [11 3] [12 4] [13 8] [14 3] [15 1] [16 2] [17 1]]</code></p>
+                        <p>The question we wish to answer is "how likely is it that we will receive $n$ phone calls in an hour?" Now, there are more complicated questions to address for the whole scheduling problem, but this is a good start.</p>
+                        <h6>Joy to the world</h6>
+                        <blockquote>Joy is a purely functional language (produced by Manfred von Thun) based on the composition of functions.</blockquote>
+                        <p>- <a href="http://joy-lang.org/">http://joy-lang.org/</a></p>
+                        <p>Joy is a stack based, concatenative, language. Programs in Joy are built up, like in standard functional programming, by composing functions together. However, unlike in standard FP, functions in Joy are restricted in a certain way.</p>
+                        <p>Functions ONLY take a stack as input and can ONLY output a stack. All functions operate on the stack. This restriction gives rise to an extremely simple syntax and a powerful mental model for solving a variety of problems.</p>
+                        <p>If, for example, you have a series of numbers you want to aggregate into a list you could do so as follow.</p>
+                        <pre>stack.
+[]
+1
+2
+4
+5
+3
+2
+6
+7
+4
+1
+3
+stack.
+[3 1 4 7 6 2 3 5 4 2 1]</pre>
+                        <p>Here, we are working in the Joy REPL where commands are executed when you type <code>.</code>.</p>
+                        <p>$3$ is currently at the top of the stack. However, if you ask what the first element of your list is you'll raise an error</p>
+                        <pre>first.
+run time error: aggregate parameter needed for first</pre>
+                        <p>This is because the stack itself is a list, but the elements on the stack are individual integers.</p>
+                        <p>If, however, we use the <code>cons</code> keyword <code>stack size</code> <code>times</code> to build up a list.</p>
+                        <pre>[] stack size [cons] times.</pre>
+                        <p>We can then use <code>first.</code> to get $1$ which was the first element we pushed.</p>
+                        <p>Concatenative programming is fairly alien for most imperative programmers at the beginning. However, the ability to reason about your program's side effects is a huge benefit of Joy.</p>
+                        <p>Also, as a quick fun example of stack based programming, we calculate the sum of a list.</p>
+                        <pre>[1 2 3] 0 [+] fold
+6</pre>
+                        <p>This is familiar in a functional world, but wild in a non functional world.</p>
+                        <p>We first push the list <code>[1 2 3]</code> onto the stack. We then push the initial agg element $0$ and the quotation <code>[+]</code>. Then, the <code>fold</code> function takes the initial element and consecutively executes the quotation on the elements of the list at the top of the stack.</p>
+                        <h6>Back to the phone</h6>
+                        <p>Now, back to our original problem of the call center. Say we want to get the likelihood that our org will receive $4$ phone calls in one hour. Given the data from before <code>[3 4 2 6 8 3 4 8 3 1 2 1]</code> for the aforementioned hours (0600 - 1700) we first would need to estimate the parameter $\lambda$</p>
+                        <p>In our case, that value is $\lambda = 3$. Now, to evaluate the likelihood using the PDF for $k=4$ phone calls we need a few helper functions. First of which is the $!$ factorial operator.</p>
+                        <p>Joy is extremely well suited for recursive computations. Our full implementation of the factorial function is a single line that uses recursion and branching.</p>
+                        <pre>DEFINE factorial  ==  [0 =] [pop 1] [dup 1 - factorial *] ifte.</pre>
+                        <p>First, notice the <code>DEFINE</code> keyword. This allows us to define functions (even recursively as shown).</p>
+                        <p>Then, jumping all the way to the end of the function we see the keyword <code>ifte</code> which stands for <b>if then else</b>. It requires the first 3 items on the stack to take a certain form [conditional] [if] [else]. When wrapped in <code>[]</code> the value on the stack is called a <i>quotation</i> which can be executed later by the program.</p>
+                        <p>This function essentially checks to see if the element is $0$ if it is, pop, otherwise duplicate the top of the stack and recursively calculate the factorial.</p>
+                        <pre>[1 2 3] 0 [+] fold factorial.
+720</pre>
+                        <p>This then allows us to calculate factorials quickly.</p>
+                        <pre>10 factorial.
+3628800</pre>
+                        <p>Lovely! Now, for the numerator we need to take the power and multiply by the exponential. Luckily Joy has some built in math operations.</p>
+                        <pre>3 4 pow.
+81</pre>
+                        <pre>1 exp.
+2.71828</pre>
+                        <h6>Grand finale!</h6>
+                        <p>The final Poisson function requires the top two elements of the stack to be $\lambda$ $k$. So, in our example we would push <code>3 4</code> onto the top of the stack.</p>
+                        <p>The code is closer to idiomatic Joy and so can be a bit weird to reason about, but essentially we manipulate these two parameter values until the top of the stack is our likelihood value.</p>
+                        <pre>DEFINE poisson ==
+[pow] nullary rolldown
+neg exp
+*
+swap factorial /.
+</pre>
+                        <p>Our method first evaluates $\lambda^k$ without removing $\lambda$ or $k$ from the stack. Then it swaps the parameters using <code>rolldown</code> so that the result of the power operation is no longer on the top of the stack.</p>
+                        <p>We then negate $\lambda$ and exponentiate. This leaves three values on the stack. The first is $\lambda^k$ and the second is $e^{-\lambda}$ and the third is $k$ we have saved for the final operation. The first two values are multiplied together, swapped, then we divide by the result of $k!$.</p>
+                        <pre>[3 4 2 6 8 3 4 8 3 1 2 1] average
+4
+poisson.
+</pre>
+                        <p>We can run this file with the proper function definitions and see the likelihood output to the terminal via stdout.</p>
+                        <pre>% ./joy poisson.joy
+0.168031</pre>
+                        <h6>In the end</h6>
+                        <p>We saw how to construct a probabilistic model given some toy data in Joy. The output of our model can then be used to determine how many people we need to staff to have sufficient call coverage.</p>
+                        <p>For example, we want to know the likelihood for a number of different calls per hour, so we <a href="/blog/first_plot_j.html">plot</a> the likelihood for 0 to 10 calls.</p>
+                        <img src="blog_files/poisson3.png" />
+                        <p>A quick intuition check says we should staff 8 callers for best coverage (given the likelihood and the max values in our data). If we were worried about cost of headcount we could condition this information with payroll values and make more informed decisions.</p>
+                        <p>The Poisson distribution is a quick way to model questions regarding number of events in a time period (our period was hours). If you are interested in waiting time information you can do similar analysis with the Gamma distribution.</p>
+                        <p>Thanks for reading! Feel free to follow me on <a href="https://twitter.com/andrew_n_carr">twitter</a> or <a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></p>
+                    </div>
+                </section>
+                <!-- <hr />
+                <p id="footnote1">[1] Ok, this is mostly a joke post, but there are some nuggets of truth about the value of being brief.</p> -->
+            </article>
+            <nav class="pagination" role="navigation">
+                <!-- <span class="page-number">Page 1 of 286</span> -->
+                <a class="older-posts" href="/blog/list.html">Other Posts <span aria-hidden="true">→</span></a>
+            </nav>
+
+
+        </main>
+        <aside class="sidebar">
+
+            <!-- Add a hire me link -->
+            <h3>Resources</h3>
+
+            <ul>
+                <li><a href="https://andrewnc.github.io/">About Me</a></li>
+                <li><a href="https://forms.gle/iahqDwnmJWUfA1oL7">Subscribe for email updates</a></li>
+                <li><a href="/blog/feed.xml">RSS Feed</a></li>
+            </ul>
+
+            <ul>
+            </ul>
+
+            <p>This blog has been continuously published since 2019</p>
+
+            <footer class="site-footer">
+                <section class="copyright">Copyright <a rel="author" href="https://linkedin.com/in/andrewnc">Andrew
+                        Carr</a> © 2019<br>
+            </footer>
+        </aside>
+    </div>
+</body>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-100415142-2');
+</script>
+
+<!-- This is how you load math if you want to -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+</html>
