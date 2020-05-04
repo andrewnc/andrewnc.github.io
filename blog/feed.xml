@@ -6,6 +6,15 @@
   <link>https://andrewnc.github.io/blog/blog.html</link>
   <description>Exploring data science problems but only using esoteric programming languages.</description>
 <item>
+<title>Poisson Distribution in Joy</title>
+<link>https://andrewnc.github.io/blog/poisson_joy.html</link>
+<description>
+
+Want to know how to optimize the number of on-call employees in your business? Come explore the Poisson distribution with the stack based programming language Joy.
+
+</description>
+</item>
+<item>
 <title>Data Normalization in Pointless</title>
 <link>https://andrewnc.github.io/blog/normalization_pointless.html</link>
 <description>
