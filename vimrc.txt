@@ -1,0 +1,136 @@
+:colorscheme monokai-phoenix
+set t_Co=256
+
+let mapleader = ","
+let g:rainbow_active=1
+set mouse=a
+set ft=sh
+set cc=80,100,120
+set so=5
+
+if has('nvim')
+  tnoremap jk <C-\><C-n>
+endif
+
+set showcmd
+filetype plugin on
+set number relativenumber
+augroup numbertoggle
+    autocmd!
+    " https://gist.github.com/nobe4/aa8313fe98ca8821afad
+    autocmd WinEnter,BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd WinLeave,BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
+
+" Turn on cursor line and column
+set cursorline
+set cursorcolumn
+
+" Set chars for whitespace
+set listchars=tab:»\ ,trail:•,nbsp:•
+set list
+
+
+"https://stackoverflow.com/questions/29167604/setting-vim-cursorline-colors
+"hi Cursor ctermfg=White ctermbg=Yellow cterm=bold guifg=white guibg=yellow
+"hi gui=bold
+
+"hi CursorColumn ctermfg=White ctermbg=Yellow cterm=bold guifg=white
+"hi guibg=yellow gui=bold
+
+
+" Splits below and to the right
+set splitbelow
+set splitright
+
+" Search options
+set hlsearch
+set ignorecase
+set smartcase
+
+" Map <esc> to quickly turn off highlight of last search
+" WARNING: Causes error which presses c immediately upon opening vim.
+" nnoremap <silent> <esc> :nohlsearch<CR><esc>
+
+
+setlocal tabstop=4
+set softtabstop=4
+set shiftwidth=4
+"set textwidth=79
+set expandtab
+set autoindent
+
+set pastetoggle=<F2>
+
+syntax on
+
+" Fold replacement text - sets indent to match the told line of fold
+set foldtext=repeat('\ ',indent(v:foldstart)).foldtext()
+
+autocmd FileType html call SetWebOptions()
+autocmd FileType javascript call SetWebOptions()
+autocmd FileType json call SetWebOptions()
+autocmd FileType css call SetWebOptions()
+" autocmd BufRead,BufNewFile *.vue set syntax=html
+autocmd BufRead,BufNewFile *.vue call SetWebOptions()
+
+" Turn off arrow keys to force use of hjkl
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" Remaps for switching vim panes
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+tnoremap <C-h> <C-w>h
+tnoremap <C-j> <C-w>j
+tnoremap <C-k> <C-w>k
+tnoremap <C-l> <C-w>l
+
+vnoremap <C-c> :w !xclip -i sel c<CR><CR>
+noremap <C-v> :r !xclip -o -sel -c<CR><CR>
+
+inoremap jk <ESC>
+nmap ; :
+nnoremap <Leader>w <C-w>
+
+au BufNewFile,BufRead *.brat set filetype=brat
+
+call plug#begin('~/.vim/plugged')
+
+" Make sure you use single quotes
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" plugin for pony lang for vim
+Plug 'jakwings/vim-pony'
+
+Plug 'tpope/vim-sensible'
+
+Plug 'vim-python/python-syntax'
+
+Plug 'terryma/vim-expand-region'
+
+Plug 'nathanaelkane/vim-indent-guides'
+
+Plug 'preservim/nerdcommenter'
+
+Plug 'tpope/vim-vinegar'
+
+Plug 'ervandew/supertab'
+
+Plug 'machakann/vim-highlightedyank'
+
+Plug 'flazz/vim-colorschemes'
+
+Plug 'mhinz/vim-startify'
+
+Plug 'luochen1990/rainbow'
+
+" Initialize plugin system
+call plug#end()
