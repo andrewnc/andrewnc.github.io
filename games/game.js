@@ -124,6 +124,7 @@ function getIslands(){
 
 function isPalindrome(dots) {
     var colors = [];
+    if(dots.length === 1){return false;}
     for(var i = 0; i < dots.length; i++){
         row = dots[i].row;
         col = dots[i].col;
