@@ -29,6 +29,8 @@ let timeRemaining = 45;
 let interval = setInterval(decreaseTimer, 1000);
 
 let score = 0;
+let longestDrome = 0;
+let uniqueDrome = 0;
 
 function decreaseTimer() {
   timeRemaining--;
@@ -46,7 +48,7 @@ function update(game) {
             }
         }
     }
-    game.setText(`Score: ${score}`);
+    game.setText(`Score: ${score} -- Longest Pal: ${longestDrome} -- Unique Pal: ${uniqueDrome}`);
     //if (timeRemaining <= 0) {
        //game.setText(`Game over! Final score: ${score}`);
        //game.end();
@@ -149,20 +151,6 @@ function getPalindromes(islands){
     return palindromes;
 }
 
-// probably won't need this which is too bad
-function getMaxRowCol(island){
-    var maxRow = -maxNumber;
-    var maxCol = -maxNumber;
-    for(dot of island){
-        if(dot.row > maxRow){
-            maxRow = dot.row;
-        }
-        if(dot.col > maxCol){
-            maxCol = dot.col;
-        }
-    }
-    return {maxRow: maxRow, maxCol: maxCol};
-}
 
 function hasGrey(){
     for(var row = 0; row < 24; row++){
@@ -254,6 +242,18 @@ function fillGrey(direction){
 function updateScore(palindrome){
     score += 1;
     score += palindrome.length;
+    if(palindrome.length > longestDrome){
+        longestDrome = palindrome.length;
+    }
+    var uniqueColors = 0;
+    var seenColors = new Set();
+    for(dot of palindrome){
+        seenColors.add(grid[dot.row][dot.col].color);
+    }
+    console.log(seenColors);
+    if(seenColors.size > uniqueDrome){
+        uniqueDrome = seenColors.size;
+    }
 }
 function onKeyPress(direction) {
     var islands = getIslands();
