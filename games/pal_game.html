@@ -12,13 +12,22 @@ body {
   font-family: 'Press Start 2P', cursive;
 }
 p {font-size:0.8em; line-height:2em;}
+.buttons {
+  margin-bottom: 0.5rem;
+}
     </style>
   </head>
   <body>
     <h2>Palindrome Colors</h2>
-    <p>Select colored palindromes (as many as you'd like) in straight lines (you can't make an island). Once you're satisfied push one of the 4 arrow key directions to collect a score and refill the board (in the direction you choose).
+    <p>Select colored palindromes (as many as you'd like) in straight lines (you can't make an island). Once you're satisfied push one of the 4 arrow key directions (or click the button) to collect a score and refill the board (in the direction you choose).
 
 Enjoy!</p>
+    <div class="buttons">
+      <button onClick="onKeyPress('UP')">Up</button>
+      <button onClick="onKeyPress('DOWN')">Down</button>
+      <button onClick="onKeyPress('LEFT')">Left</button>
+      <button onClick="onKeyPress('RIGHT')">Right</button>
+    </div>
   </body>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100415142-2"></script>
