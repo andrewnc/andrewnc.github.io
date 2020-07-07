@@ -29,6 +29,7 @@ let timeRemaining = 45;
 let interval = setInterval(decreaseTimer, 1000);
 
 let score = 0;
+let highScore = localStorage.getItem('high_score') || 0;
 let longestDrome = 0;
 let uniqueDrome = 0;
 
@@ -37,6 +38,10 @@ function decreaseTimer() {
   if (timeRemaining == 0) {
     clearInterval(interval);
   }
+}
+function updateGameText(text, textLength) {
+  var scroll = Math.floor(game.getFrameCount() / 4) % textLength;
+  game.setText(text.substr(scroll, scroll + textLength));
 }
 function update(game) {
     for(row of grid){
@@ -48,7 +53,8 @@ function update(game) {
             }
         }
     }
-    game.setText(`Score: ${score} -- Longest Pal: ${longestDrome} -- Unique Pal: ${uniqueDrome}`);
+    var text = `Score: ${score} -- High Score: ${highScore} -- Longest Pal: ${longestDrome} -- Unique Pal: ${uniqueDrome} -- `;
+    updateGameText(text + text, text.length); 
     //if (timeRemaining <= 0) {
        //game.setText(`Game over! Final score: ${score}`);
        //game.end();
@@ -243,6 +249,9 @@ function fillGrey(direction){
 function updateScore(palindrome){
     score += 1;
     score += palindrome.length;
+    var previousHighScore = localStorage.getItem('high_score') || 0;
+    highScore = Math.max(previousHighScore, score);
+    localStorage.setItem('high_score', highScore);
     if(palindrome.length > longestDrome){
         longestDrome = palindrome.length;
     }
