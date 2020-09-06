@@ -20,6 +20,8 @@
 <link rel="stylesheet" href="./static/custom.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+<!-- A 3d-hover-effect link -->
+<script src="./static/hover3D.js"></script>
 
 <!-- <link href='https://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'> -->
 <!-- <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"> -->
@@ -83,7 +85,7 @@
 <div class="home-deta" style="margin-top:90px;">
 <div class="row">
 <div class="col-md-4">
-<div class="boder-img">
+<div class="boder-img dclicker">
 <img src="./static/compressed_me.jpg" class="img-fluid" alt="#">
 </div>
 </div>
@@ -301,5 +303,8 @@ I'm broadly interested in optimal transport, generative modeling, and quantum co
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'UA-100415142-2');
+</script>
+<script>
+    let hover3D = new Hover3D(".dclicker");
 </script>
 </html>
