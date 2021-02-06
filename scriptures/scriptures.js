@@ -451,7 +451,7 @@ const Scriptures = (function() {
         });
 
         let bounds = new google.maps.LatLngBounds();
-        if(gmMarkers.length >= 0){
+        if(gmMarkers.length > 0){
             gmMarkers.forEach(function (marker){
                 bounds.extend({lat:marker.position.lat(), lng:marker.position.lng()});
             });
@@ -459,6 +459,7 @@ const Scriptures = (function() {
             bounds.extend({lat: 31.7683, lng: 35.2137});
         }
 
+        console.log(bounds);
         map.fitBounds(bounds);
     };
 
