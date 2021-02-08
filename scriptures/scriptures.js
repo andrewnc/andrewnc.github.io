@@ -183,7 +183,10 @@ const Scriptures = (function() {
     };
 
     chaptersGrid = function(book){
-        return htmlDiv({
+        return htmlLink({
+            href: "javascript:history.back()",
+            content: "back"
+        }) + htmlDiv({
             classKey: CLASS_VOLUME,
             content: htmlElement(TAG_HEADER5, book.fullName)
         }) + htmlDiv({
@@ -236,7 +239,10 @@ const Scriptures = (function() {
     };
 
     getScripturesCallback = function(chapterHTML){
-        document.getElementById(DIV_SCRIPTURES).innerHTML = chapterHTML;
+        document.getElementById(DIV_SCRIPTURES).innerHTML = htmlLink({
+            href: "javascript:history.back()",
+            content: "back"
+        })+chapterHTML;
 
 
         let ids = location.hash.slice(1).split(":").map((x) => Number(x));
@@ -459,7 +465,6 @@ const Scriptures = (function() {
             bounds.extend({lat: 31.7683, lng: 35.2137});
         }
 
-        console.log(bounds);
         map.fitBounds(bounds);
     };
 
