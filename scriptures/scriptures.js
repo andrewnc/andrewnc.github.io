@@ -38,6 +38,7 @@ const Scriptures = (function() {
     const REQUEST_STATUS_OK = 200;
     const REQUEST_STATUS_ERROR = 400;
     const TAG_HEADER5 = "h5";
+    const PRECISION = 1e-5;
 
     // Private Variables
     let books;
@@ -82,7 +83,10 @@ const Scriptures = (function() {
 
         let isOnMap = false;
         gmMarkers.forEach(function(marker){
-            if ((Number(lat) === marker.position.lat()) && (Number(lng) === marker.position.lng())){
+            if ((Math.abs(Number(lat) - marker.position.lat()) < PRECISION) && (Math.abs(Number(lng) - marker.position.lng()) < PRECISION)){
+                    if (!marker.label.includes(placeName)){
+                        marker.label += `, ${placeName}`;
+                    }
                 isOnMap = true;
             }
         });
