@@ -1,6 +1,8 @@
 html { height: 100%; background-color: #fff; }
 body { font-family: 'Open Sans', sans-serif; font-weight: normal; font-style: normal; font-size: 14px; line-height: 24px; color: #777777; height: 100%; width: 100%; }
-body .main-container { background-color: #fff; height: calc(100% - 0px); height: -webkit-calc(100% - 0px); height: -moz-calc(100% - 0px); position: relative; z-index: 3; }
+body .main-container {
+    background-color: #fff; position: relative; z-index: 3;
+}
 body .wrapper { position: relative; height: 100%; width: 100%; }
 a, .button { transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; -moz-transition: all 0.5s ease-in-out; -ms-transition: all 0.5s ease-in-out; -o-transition: all 0.5s ease-in-out; -webkit-transition: all 0.5s ease-in-out; color: #333333; }
 a:focus { text-decoration: none; }
@@ -72,3 +74,26 @@ header .navbar.navbar-light .navbar-brand img { height: 55px; transition: all 0.
 .content-deta h1 { font-weight: 800; color: #333333; margin: 0px; line-height: normal; font-size: 54px; }
 .content-deta #typer { height: 65px; margin: 10px 0; }
 .content-deta h1.iq-font-purple { color: #31d181; }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+.flex-container {
+    display: flex;
+    flex-direction: row;
+}
+@media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+}
