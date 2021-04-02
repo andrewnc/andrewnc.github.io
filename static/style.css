@@ -60,7 +60,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBo
 
 
 header { display: inline-block; width: 100%; position: relative; }
-header .navbar.navbar-light { padding: 0; margin: 0; }
+header .navbar.navbar-light { padding: 0; margin: 0; margin-right:2em; }
 header .navbar.navbar-light .navbar-brand { padding: 15px 0 15px 50px; transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out; -moz-transition: all 0.5s ease-in-out; -ms-transition: all 0.5s ease-in-out; -o-transition: all 0.5s ease-in-out; -webkit-transition: all 0.5s ease-in-out; }
 header .navbar.navbar-light .navbar-nav { padding-right: 30px; }
 header .navbar.navbar-light .navbar-nav .nav-link { color: #333333; font-size: 16px; padding: 5px 20px; position: relative; text-transform: capitalize; }
