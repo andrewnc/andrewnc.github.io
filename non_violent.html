@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Non-Violent Propaganda Theory: A Mathematical Narrative</title>
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']], displayMath: [['$$', '$$']] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+    <style>
+        body {
+            max-width: 800px;
+            margin: auto;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        code {
+            background: #f8f8f8;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 8px;
+            overflow: auto;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 1.2em;
+        }
+
+        h1 {
+            margin-bottom: 0.5em;
+        }
+
+        blockquote {
+            border-left: 3px solid #ddd;
+            padding-left: 15px;
+            color: #555;
+        }
+
+        .center_me {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Non-Violent Propaganda Theory: A Mathematical Narrative</h1>
+
+    <p><em>By [Your Name Here]</em></p>
+
+    <hr />
+
+    <p>
+        In modern society, words, images, and repeated signals often have <strong>profound power</strong> over public
+        opinion and emotional states, sometimes more so than direct force. When those signals are <em>non-violent</em>,
+        we label them “non-violent propaganda.” This might sound paradoxical—propaganda can be negative in
+        connotation—but the key here is that <strong>we do not rely on physical or military force</strong>. Instead, we
+        rely on repeated, subtle influences that push a population toward a desired frame of mind (e.g., anger,
+        suspicion, solidarity).
+    </p>
+
+    <p>
+        But how do we <em>quantify</em> these intangible influences in a rigorous way? Traditional social network models
+        tend to either ignore the emotional dimension, or treat it as a simple linear combination of opinions. While
+        these methods are valuable, they often fail to capture the crucial idea of <em>repeated, persistent
+            signals</em>. In real life, daily exposure to a certain message—like news headlines or gas prices—can have a
+        <strong>cumulative effect</strong> that might not be linear.
+    </p>
+
+    <p>
+        In this post, I will introduce a <strong>new mathematical framework</strong> that extends standard network
+        control ideas into the realm of <em>non-violent propaganda</em>. Along the way, I’ll break down concepts like
+        the <em>Non-Violence Index</em>, the <em>Emotional Sensitivity Operator</em>, and a specialized <em>Propaganda
+            Operator</em>. We’ll see how these pieces fit together into a cohesive theory, and how they can explain the
+        emergence of a so-called <strong>“propaganda equilibrium.”</strong>
+    </p>
+
+    <hr />
+
+    <h2>1. What Makes This Theory Different?</h2>
+
+    <p>
+        The idea of <strong>influencing social networks</strong> has been studied extensively—there are many well-known
+        frameworks for “control,” “spreading,” or “diffusion” on social graphs. However, <em>non-violent propaganda</em>
+        has distinct qualities that deserve special attention:
+    </p>
+    <ol>
+        <li><strong>It’s purely informational</strong>, not backed by overt threats.</li>
+        <li><strong>Emotional reactivity matters</strong>: repeated signals accumulate differently than single bursts.
+        </li>
+        <li>Often <strong>slowly builds over time</strong> rather than aiming for immediate uniform consensus.</li>
+    </ol>
+
+    <p>
+        These subtle aspects are captured by three core elements in our framework:
+    </p>
+    <blockquote>
+        <ul>
+            <li><strong>Non-Violence Index (NVI)</strong>: Ensures we measure how <em>un</em>-coercive the strategy is.
+            </li>
+            <li><strong>Emotional Sensitivity Operator</strong>: Models how cumulative repetition influences a node’s
+                internal state over time.</li>
+            <li><strong>Propaganda Operator</strong>: A new, more general update rule for social states that includes
+                both <em>diffusion</em> and <em>accumulated signals</em>.</li>
+        </ul>
+    </blockquote>
+
+    <hr />
+
+    <h2>2. The Non-Violence Index</h2>
+
+    <p>
+        Let’s start by clarifying what we mean by <strong>“non-violent.”</strong> Consider a propagandist who can use
+        either <em>informational methods</em> (like broadcast messages, social media) or <em>coercive methods</em> (like
+        intimidation). We want a measure that effectively says, “How reliant is our strategy on force versus just pure
+        messaging?”
+    </p>
+
+    <p>
+        We define a parameter \( \lambda \ge 0 \) that represents the <strong>“cost of coercion.”</strong> Whenever the
+        propagandist deploys a coercive step, we add \(\lambda\) to the “violence budget.” Then we normalize by the
+        maximum possible budget \(\Lambda_{\max}\). This leads to:
+    </p>
+
+    <p class="center_me">
+        \(
+        \mathrm{NVI}
+        \;=\; 1 \;-\; \frac{\sum_{t=0}^{T-1}\lambda \,\mathbf{1}\{u(t) \text{ is coercive}\} }{ \Lambda_{\max} }.
+        \)
+    </p>
+
+    <p>
+        Here, \(u(t)\) is the <em>input</em> or “signal” the propagandist uses at time \(t\). If we never use coercive
+        inputs, then the sum is 0, and our Non-Violence Index equals 1, indicating a <strong>fully non-violent</strong>
+        propaganda strategy.
+    </p>
+
+    <p>
+        This concept may feel abstract, but in essence it means: <em>We are not physically forcing anyone to believe
+            something; we are relying purely on repeated content-based strategies.</em>
+    </p>
+
+    <hr />
+
+    <h2>3. Emotional Sensitivity: Why Repetition Works</h2>
+
+    <p>
+        One of the central ideas in non-violent propaganda is that <strong>repetition matters.</strong> If you see a
+        gas-price sign daily, or see the same political hashtag trending each morning, you are <em>accumulating small
+            emotional responses</em> that might eventually become significant.
+    </p>
+
+    <h3>3.1 Defining the Operator \(\Psi\)</h3>
+
+    <p>
+        We capture this cumulative effect in a function \(\Psi\), the <strong>Emotional Sensitivity Operator</strong>.
+        It takes two things:
+    </p>
+    <ol>
+        <li>The current state \(x_i(t)\) of a person \(i\) at time \(t\) (maybe it’s an “anger” or “suspicion” level).
+        </li>
+        <li>A <em>history</em> of signals \(\{u(\tau)\}_{\tau=0}^{t}\), such as repeated news articles or repeated price
+            postings.</li>
+    </ol>
+
+    <p>
+        We then define:
+    </p>
+
+    <p class="center_me">
+        \(
+        \Psi\bigl(x_i(t), \{u(\tau)\}_{\tau=0}^t\bigr)
+        \;=\;
+        \kappa \,\phi\Bigl(\,x_i(t), \,\sum_{\tau=0}^t \omega(\tau)\,u(\tau)\Bigr),
+        \)
+    </p>
+
+    <p>
+        where \(\kappa\) and \(\omega(\tau)\) are just factors that scale or discount the contribution of past signals,
+        and \(\phi\) is any function that might capture <em>nonlinear</em> or <em>saturating</em> effects (like “too
+        much repetition can cause people to tune out”).
+    </p>
+
+    <p>
+        <strong>Intuition:</strong> <em>As we keep piling up small signals, the emotional or opinion shift becomes
+            bigger and bigger—unless it plateaus. This is a more realistic model for human attitudes than the purely
+            linear “one-shot opinion change.”</em>
+    </p>
+
+    <hr />
+
+    <h2>4. The Propaganda Operator \(\mathcal{P}\)</h2>
+
+    <p>
+        How do we put everything together so that each person in the network updates their “state” from time \(t\) to
+        \(t+1\)? We define the <strong>Propaganda Operator</strong>, \(\mathcal{P}\), to combine:
+    </p>
+    <ol>
+        <li>A <strong>diffusion</strong> matrix \(A\), telling us how much neighbors influence each other.</li>
+        <li>The <strong>emotional response</strong> from \(\Psi\), which might be distributed according to some matrix
+            \(B\).
+    </ol>
+
+    <p>
+        In simpler notation:
+    </p>
+
+    <p class="center_me">
+        \(
+        \mathbf{x}(t+1)
+        \;=\;
+        \mathcal{P}\!\Bigl(\mathbf{x}(t),\{u(\tau)\}_{\tau=0}^{t}\Bigr)
+        \;=\;
+        A\,\mathbf{x}(t)
+        \;+\;
+        B\,\bigl(\Psi(\cdot,\{u(\tau)\})\bigr).
+        \)
+    </p>
+
+    <p>
+        If we break this down for a single individual \(i\):
+    </p>
+
+    <p class="center_me">
+        \(
+        x_i(t+1)
+        =
+        \sum_{j=1}^{n} A_{ij}\,x_j(t)
+        \;+\;
+        \sum_{k=1}^{n} B_{ik} \,\Psi\!\Bigl(x_k(t), \{u(\tau)\}\Bigr).
+        \)
+    </p>
+
+    <p>
+        And that’s really the crux: each person looks at <em>how their neighbors felt</em> plus <em>how repeated signals
+            have shaped them</em>. Even though it may feel abstract, it’s actually quite close to how we process
+        repeated content in daily life.
+    </p>
+
+    <hr />
+
+    <h2>5. Existence of a “Propaganda Equilibrium”</h2>
+
+    <p>
+        One of the most interesting parts of this theory is that <strong>the system may stabilize</strong> under
+        persistent repetition. Imagine a scenario where the propaganda signal \(u(t)\) becomes <em>constant</em>—that
+        is, the same message is repeated day after day. Does the population’s emotional state settle down somewhere?
+    </p>
+
+    <p>
+        Formally, we look for a point \(\mathbf{x}^*\) such that:
+    </p>
+
+    <p class="center_me">
+        \(
+        \mathbf{x}^*
+        =
+        \mathcal{P}\Bigl(\mathbf{x}^*,\;\{u^*,u^*,u^*,\dots\}\Bigr).
+        \)
+    </p>
+
+    <p>
+        Because \(\Psi\) can incorporate the <em>accumulated</em> effect of repeating \(u^*\) infinitely many times, we
+        define a <em>steady-state version</em> called \(\Psi^\infty\), which captures the limiting effect of repeated
+        signals. Then we solve:
+    </p>
+
+    <p class="center_me">
+        \(
+        \mathbf{x}^*
+        =
+        A\,\mathbf{x}^*
+        \;+\;
+        B\,\bigl(\Psi^\infty(\mathbf{x}^*,u^*)\bigr).
+        \)
+    </p>
+
+    <h3>5.1 Why such an equilibrium might exist</h3>
+
+    <p>
+        Imagine a simplified example:
+    </p>
+    <ul>
+        <li>You have a personal “inertia” (the matrix \(A\) keeps your new opinion from changing too drastically each
+            day).</li>
+        <li>You have an operator \(\Psi\) that is <em>monotonic</em>—the more repeated signals, the more it pushes you.
+            But maybe it’s saturating, so it doesn’t keep pushing forever.</li>
+    </ul>
+
+    <p>
+        Over time, these two forces <em>balance</em> out. The diffusion from neighbors keeps opinions from diverging too
+        wildly, and the repeated signals keep pushing them upward (or downward) until a stable point is reached.
+    </p>
+
+    <p>
+        In a purely linear world, we might use classic matrix algebra to show that if the spectral radius of \(A\) is <
+            1, then everything converges nicely. Here, with \(\Psi\) thrown in, we rely on a <em>fixed-point
+            theorem</em> from mathematics (like Brouwer’s or Schauder’s) to guarantee at least one equilibrium under
+            fairly mild conditions.
+    </p>
+
+    <hr />
+
+    <h2>6. Intuition-Building Example: Gas Prices</h2>
+
+    <p>
+        So far, we’ve described a broad framework. Let’s apply it to a <strong>concrete daily trigger</strong>: <em>gas
+            prices</em>.
+    </p>
+
+    <p>
+        When you pass by a station and notice higher prices, your sense of frustration (or blame toward incumbents) may
+        tick upward slightly. Then the next day, you see it again. And the next day. Repeatedly.
+    </p>
+
+    <p>
+        In our notation:
+    </p>
+    <ul>
+        <li><strong>Input</strong>, \(u(t)\), is the posted gas price at day \(t\).</li>
+        <li><strong>Emotional Sensitivity</strong>, \(\Psi\), could be an operator that takes your current frustration
+            level \(x_i(t)\) and <em>adds a function</em> of the <em>cumulative total</em> of gas prices you’ve seen in
+            the last week or month.</li>
+        <li><strong>No violence</strong> is used (the Non-Violence Index is 1), since no one is forced to do anything
+            physically.</li>
+    </ul>
+
+    <p>
+        As these signals accumulate, your frustration might stabilize at a level higher than before if the prices remain
+        high. That final “stabilized” level is the <strong>propaganda equilibrium</strong> in this simple example. This
+        is exactly the scenario our theorems speak to. Critically, if this continues for a long enough time, it can push
+        a population to a new equilibrium state of opinion or emotion which can lead to votes swinging which aren't
+        captured in traditional polls.
+    </p>
+
+    <hr />
+
+    <h2>7. Why Non-Violent Propaganda Matters</h2>
+
+    <p>
+        This framework underscores that even <em>without overt force</em>, repeated emotional triggers can
+        <strong>significantly shift a population</strong>. Whether we’re talking gas prices, social-media hashtags, or
+        sensational headlines, the <em>mechanics</em> are quite similar.
+    </p>
+
+    <blockquote>
+        <strong>Big Takeaway</strong>: The repeated signals exploit our built-in tendency to accumulate small influences
+        over time, potentially causing a large net shift in opinion or emotional state—even though no explicit threats
+        are involved.
+    </blockquote>
+
+    <p>
+        From a policy or ethical standpoint, recognizing that such repeated signals can be <em>designed</em> to
+        manipulate attitudes non-violently raises questions about media regulation, transparency, and personal
+        awareness.
+    </p>
+
+    <hr />
+
+    <h2>8. Where to Go from Here</h2>
+
+    <p>
+        The theory here is <strong>foundational</strong>; it provides a <em>conceptual map</em> for how repeated signals
+        can produce equilibrium states in social attitudes. There are many fascinating directions to explore:
+    </p>
+    <ol>
+        <li><strong>Heterogeneous Receptivity</strong>: People aren’t all equally sensitive; how does that change
+            stability or equilibrium states?</li>
+        <li><strong>Multiple Signals</strong>: Real-world propaganda often uses more than one “metric.” We can model a
+            vector \(\mathbf{u}(t)\) with multiple repeated triggers.</li>
+        <li><strong>Dynamic Feedback</strong>: Perhaps the propagandist adjusts gas prices (or messages) if public anger
+            isn’t rising fast enough—this becomes a feedback control loop.</li>
+    </ol>
+
+    <hr />
+
+    <h2>9. A Quick Toy Example in Python</h2>
+
+    <p>
+        Here is a minimalistic Python snippet showing how one might implement a basic “Propaganda Operator.” Instead of
+        a full-scale proof, we just illustrate a repeated signal and watch how the system’s state evolves.
+    </p>
+
+    <pre><code class="language-python">
+import numpy as np
+
+# Number of nodes
+n = 5
+
+# Adjacency or diffusion matrix A
+A = np.array([
+    [0.3, 0.1, 0.0, 0.0, 0.2],
+    [0.1, 0.2, 0.1, 0.1, 0.0],
+    [0.0, 0.1, 0.4, 0.0, 0.0],
+    [0.1, 0.0, 0.0, 0.3, 0.1],
+    [0.0, 0.2, 0.1, 0.0, 0.2]
+])
+
+# B might be diagonal here, meaning each node primarily processes its own emotional response
+B = np.eye(n)
+
+# A sample "emotional sensitivity" function that saturates at some level
+def Psi(x, sum_signal):
+    # x is current node state, sum_signal is accumulated input
+    return 0.5 * (x + np.log(1 + sum_signal))
+
+# We'll do a basic time evolution
+T = 10
+x = np.zeros((T+1, n))  # track states over time
+x[0] = np.array([0.1, 0.2, 0.0, 0.05, 0.0])  # initial states
+
+# Repeated signal (e.g., "gas price" = 2.0) each step
+u = 2.0
+
+for t in range(T):
+    # 1) build the cumulative signal (for demonstration, just t*u)
+    #    in real usage we might sum over all previous time steps
+    cum_signal = (t+1) * u
+
+    # 2) compute next state
+    # diffusion part
+    diffusion = A @ x[t]
+
+    # emotional part (apply Psi to each node)
+    emotional = np.zeros(n)
+    for i in range(n):
+        emotional[i] = Psi(x[t][i], cum_signal)
+    
+    x[t+1] = diffusion + B @ emotional
+
+# Print final states
+print("Final state after repeated propaganda:", x[-1])
+</code></pre>
+
+    <p>
+        If you run this code, you’ll see that the final state can end up higher than the initial for most nodes,
+        indicating <strong>a net shift in emotional/opinion values</strong> due to repeated signals.
+    </p>
+
+    <hr />
+
+    <h2>Conclusion</h2>
+
+    <p>
+        We’ve proposed a <strong>new mathematical framework</strong> that treats non-violent propaganda as a
+        <em>specialized dynamic</em> in social networks, focusing on:
+    </p>
+    <ul>
+        <li><em>Repeated informational signals</em> (the “propaganda”)</li>
+        <li><em>Non-violent indices</em> to ensure we’re measuring reliance on force</li>
+        <li><em>Emotionally sensitive update functions</em> that accumulate over time</li>
+    </ul>
+
+    <p>
+        The key result is that <strong>small, recurring signals can produce stable shifts in emotional or opinion
+            states</strong>—i.e., a <em>propaganda equilibrium</em>. This highlights the potency of subtle, repeated
+        messaging.
+    </p>
+
+    <p>
+        Though the word “propaganda” carries negative undertones, the deeper lesson is that repeated, well-chosen
+        signals—whether for good or ill—<em>are extremely powerful in shaping collective mindsets</em>. Understanding
+        the mathematics of this process may be key to <strong>identifying, mitigating, or ethically employing</strong>
+        such influences in the real world.
+    </p>
+
+</body>
+
+</html>
