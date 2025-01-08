@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Non-Violent Propaganda Theory, Part 2: Leaders, In-Groups, and Surprising Equilibria</title>
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['$$', '$$']] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <style>
+    body {
+      max-width: 800px;
+      margin: auto;
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    code {
+      background: #f8f8f8;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    pre {
+      background: #f8f8f8;
+      padding: 10px;
+      border-radius: 8px;
+      overflow: auto;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-top: 1.2em;
+    }
+
+    h1 {
+      margin-bottom: 0.5em;
+    }
+
+    blockquote {
+      border-left: 3px solid #ddd;
+      padding-left: 15px;
+      color: #555;
+    }
+
+    .math-block {
+      background: #f8f8f8;
+      padding: 10px;
+      margin: 1em 0;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    .center_me {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Non-Violent Propaganda Theory, Part 2: Leaders, In-Groups, and Surprising Equilibria</h1>
+
+  <p><em>By Andrew Carr - Jan 2025</em></p>
+  <hr />
+
+  <p>
+    In our previous exploration, we introduced a novel mathematical framework for <strong>non-violent
+      propaganda</strong>, focusing on the idea that <em>repeated signals</em>—rather than overt force—can produce large
+    shifts in public opinion or emotional states over time. We also introduced operators such as:
+  </p>
+  <ul>
+    <li><strong>Non-Violence Index (NVI)</strong>: measuring reliance on force.</li>
+    <li><strong>Emotional Sensitivity Operator</strong> (\( \Psi \)): modeling how repeated signals accumulate within
+      individuals.</li>
+    <li><strong>Propaganda Operator</strong> (\( \mathcal{P} \)): describing how each node’s state updates by combining
+      social diffusion and cumulative signal effects.</li>
+  </ul>
+
+  <p>
+    Now, we push the theory further by incorporating two key ideas:
+  </p>
+  <ol>
+    <li><strong>Leaders</strong>: Individuals or entities with disproportionate influence in shaping the network’s
+      opinions.</li>
+    <li><strong>In-Groups</strong>: Subsets of the population that form “echo chambers,” where internal connections are
+      stronger (or more trusted) than external ones.</li>
+  </ol>
+
+  <p>
+    We will see how these additions yield <em>surprising equilibrium structures</em>—for instance, sudden flips in
+    collective sentiment, multiple stable emotional “basins,” or “hidden” attractors that only emerge when in-group
+    leaders deploy persistent signals. Let’s explore.
+  </p>
+
+  <hr />
+
+  <h2>1. Leaders as “Signal Amplifiers”</h2>
+
+  <p>
+    Even purely non-violent methods often rely on <strong>central voices or leaders</strong> to shape the discourse. In
+    social science, these are sometimes called “opinion makers” or “influencers.” Mathematically, we can model leaders
+    as <em>nodes whose influence weight is higher than average</em> and who have direct control over the repeated
+    signals.
+  </p>
+
+  <h3>1.1 Introducing a Leader-Weighted Matrix</h3>
+
+  <p>
+    Recall from the previous post that we represent social diffusion using a matrix \(A\), whose entries \(A_{ij}\)
+    describe how much person \(j\) influences person \(i\). Suppose we have a small set of leader nodes, \(L = \{\ell_1,
+    \ell_2, \ldots\}\). We give these nodes a greater “broadcast power” by defining:
+  </p>
+
+  <div class="center_me">
+    \(
+    A^{(\mathrm{lead})}_{ij}
+    \;=\;
+    \begin{cases}
+    \alpha \,A_{ij}, & \text{if } j \in L,\\
+    A_{ij}, & \text{otherwise},
+    \end{cases}
+    \)
+  </div>
+
+  <p>
+    where \(\alpha > 1\) is an amplification factor. This simply <em>boosts</em> the influence originating from leaders.
+  </p>
+
+  <p>
+    Next, let’s say leaders have direct control over the input \(u(t)\) at each time step. We can represent this as:
+  </p>
+
+  <div class="center_me">
+    \(
+    u(t)
+    \;=\;
+    \mathbf{e}_{\ell_1} \,u_{\ell_1}(t)
+    \;+\;
+    \mathbf{e}_{\ell_2} \,u_{\ell_2}(t)
+    \;+\;\cdots
+    \)
+  </div>
+
+  <p>
+    where \(\mathbf{e}_{\ell_k}\) is a one-hot vector that indicates leader node \(\ell_k\) is broadcasting that new
+    piece of informational content at time \(t\). Leaders and repeated signals are thus unified in a clean mathematical
+    form.
+  </p>
+
+  <hr />
+
+  <h2>2. In-Groups, Group Resonance, and “Echo Chambers”</h2>
+
+  <p>
+    The notion of an <strong>in-group</strong> is fundamental to social psychology. We trust (or pay attention to)
+    messages more if they come from our own group. We can reflect this in our model by having a <em>block structure</em>
+    in the adjacency matrix or by adding a <em>group resonance factor</em> that amplifies internal signals.
+  </p>
+
+  <h3>2.1 Partitioning the Network</h3>
+
+  <p>
+    Suppose the population of \(n\) nodes is divided into \(G\) groups, \(G_1, G_2, \dots, G_G\). Conceptually
+    reordering nodes, the adjacency matrix \(A\) can take a block form:
+  </p>
+
+  <div class="center_me">
+    \(
+    A
+    \;=\;
+    \begin{bmatrix}
+    A^{(1,1)} & A^{(1,2)} & \cdots & A^{(1,G)} \\
+    A^{(2,1)} & A^{(2,2)} & \cdots & A^{(2,G)} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    A^{(G,1)} & A^{(G,2)} & \cdots & A^{(G,G)}
+    \end{bmatrix}.
+    \)
+  </div>
+
+  <p>
+    Here, each block \(A^{(p,q)}\) corresponds to how members of group \(G_q\) influence members of group \(G_p\).
+    Often, we see:
+  </p>
+  <ul>
+    <li><strong>Stronger diagonal blocks</strong> (\(A^{(p,p)}\)): high in-group connectivity.</li>
+    <li><strong>Weaker off-diagonal blocks</strong> (\(A^{(p,q)}\)): lower cross-group influence.</li>
+  </ul>
+
+  <p>
+    This reflects the presence of “echo chambers,” where in-group signals resonate more strongly than outside signals.
+  </p>
+
+  <h3>2.2 A “Group Resonance Operator”</h3>
+
+  <p>
+    We can also refine the <em>Emotional Sensitivity Operator</em> \(\Psi\) from the previous post by introducing a
+    <strong>Group Resonance Operator</strong> \(\Gamma\). Specifically,
+  </p>
+
+  <div class="center_me">
+    \(
+    \Gamma\bigl(x_i(t), \{u(\tau)\}_{\tau=0}^t; i \in G_p\bigr)
+    \;=\;
+    \beta_p
+    \;
+    \Psi\!\Bigl(x_i(t), \{u(\tau)\}_{\tau=0}^t\Bigr),
+    \)
+  </div>
+
+  <p>
+    where \(\beta_p > 0\) is the <em>resonance factor</em> for group \(p\). If repeated signals also originate within
+    the same group \(p\), \(\beta_p\) can be even larger (or conversely smaller for out-group signals). Intuitively:
+  </p>
+
+  <blockquote>
+    If you and I belong to the same group, your repeated messages <strong>resonate</strong> more for me than if we
+    belonged to different groups.
+  </blockquote>
+
+  <hr />
+
+  <h2>3. Extending the Propaganda Operator</h2>
+
+  <p>
+    Let’s now modify the <strong>Propaganda Operator</strong> \(\mathcal{P}\) from before to include leaders and
+    in-group resonance:
+  </p>
+
+  <div class="center_me">
+    \(
+    \mathbf{x}(t+1)
+    \;=\;
+    \mathcal{P}\!\Bigl(\mathbf{x}(t),\{u(\tau)\}\Bigr)
+    \;=\;
+    A^{(\mathrm{lead})}\,\mathbf{x}(t)
+    \;+\;
+    B\,\Gamma\bigl(\cdot,\{u(\tau)\}\bigr).
+    \)
+  </div>
+
+  <p>
+    Here:
+  </p>
+
+  <ul>
+    <li>\(A^{(\mathrm{lead})}\) is the original \(A\) but with leader amplification.</li>
+    <li>\(B\) is the matrix that distributes the emotional push to each node (just as in the previous post).</li>
+    <li>\(\Gamma\) modifies \(\Psi\) based on group membership—“resonance” for in-group signals.</li>
+  </ul>
+
+  <p>
+    Leaders can now <em>choose</em> the repeated signals over time, and they know these signals are amplified through
+    \(A^{(\mathrm{lead})}\) and further reinforced by in-group resonance factors \(\beta_p\).
+  </p>
+
+  <hr />
+
+  <h2>4. Surprising Equilibria and Phase Transitions</h2>
+
+  <p>
+    A central theme in non-violent propaganda is the <em>gradual buildup</em> of sentiment. However, with leaders and
+    in-groups in the mix, the social system can display <strong>bistability, abrupt flips, or “phase
+      transitions”</strong> as certain parameters (e.g., repetition rate or leader intensity) cross thresholds.
+  </p>
+
+  <h3>4.1 Bistability Due to Resonance</h3>
+
+  <p>
+    Consider a group \(G_p\) with a large resonance factor \(\beta_p\). If a leader within that group relentlessly
+    broadcasts high-intensity repeated signals, the group’s internal state might climb to a “high” emotional
+    equilibrium. If the signals cease (or the leader is discredited), that same group could <em>drop back</em> to a
+    lower equilibrium. Both equilibria might satisfy
+  </p>
+
+  <div class="center_me">
+    \(
+    \mathbf{x}^*_{\text{low}},
+    \quad
+    \mathbf{x}^*_{\text{high}}
+    \quad\text{such that}\quad
+    \mathcal{P}(\mathbf{x}^*_{\text{low}}) = \mathbf{x}^*_{\text{low}},
+    \quad
+    \mathcal{P}(\mathbf{x}^*_{\text{high}}) = \mathbf{x}^*_{\text{high}}.
+    \)
+  </div>
+
+  <p>
+    This is <em>bistability</em>. The group’s “resting state” depends on initial conditions and whether a leader
+    <em>maintains</em> repeated messaging long enough to push the group out of the low equilibrium.
+  </p>
+
+  <h3>4.2 Sudden Flips via Leader Coordination</h3>
+
+  <p>
+    If multiple in-group leaders <em>coordinate</em>, especially in a network with multiple echo chambers, we can see
+    <strong>network-wide “tipping”</strong>. Two or more groups might remain in a calm state if only one leader is
+    pushing signals. But if each in-group is “activated” simultaneously by its own leader, the bridging connections
+    between groups might suddenly lock the entire population into a new, higher emotional equilibrium.
+  </p>
+
+  <blockquote>
+    <strong>Intuitive Picture</strong>: Think of two separate “buckets” being filled. Each group’s internal state rises
+    under repeated signals. Once they’re both heavy enough, the small links between them can propagate that heightened
+    emotion across the network, causing a <em>rapid cascade</em>.
+  </blockquote>
+
+  <hr />
+
+  <h2>5. Mini Case Study: Two-Group Network</h2>
+
+  <p>
+    To illustrate, consider a network of two groups (<strong>G1</strong> and <strong>G2</strong>) each with a leader.
+    Suppose:
+  </p>
+  <ul>
+    <li>Both groups have a high resonance factor (\(\beta_1 = \beta_2 = 2.0\)).</li>
+    <li>Leaders have amplification \(\alpha = 2.0\) in \(A^{(\mathrm{lead})}\).</li>
+    <li>Each leader broadcasts a repeated signal daily.</li>
+  </ul>
+
+  <p>
+    Initially, everyone’s emotional state is near zero (calm). However, after a few days of <em>both leaders
+      broadcasting</em>, synergy between the two in-groups can suddenly <strong>tip the system</strong> into a high
+    emotional state—<em>even though neither group alone</em> would have had enough force to shift the entire network on
+    its own. This demonstrates a non-violent but <em>powerful</em> dynamic driven by <em>leader coordination</em>.
+  </p>
+
+  <hr />
+
+  <h2>6. A Toy Simulation in Python</h2>
+
+  <p>
+    Below is a simplified Python snippet showing how leader amplification and in-group resonance might be implemented.
+    This mirrors the style from our previous post but highlights the new elements:
+  </p>
+
+  <pre><code class="language-python">
+# /// script
+# dependencies = [
+#   "numpy",
+# ]
+# ///
+
+import numpy as np
+
+# Number of nodes
+n = 6
+
+# Assign groups: 0,1,5 -> Group 1; 2,3,4 -> Group 2
+groups = {
+    0: 1,
+    1: 1,
+    2: 2,
+    3: 2,
+    4: 2,
+    5: 1
+}
+
+# Base adjacency matrix (no leader amplification yet)
+A = np.array([
+    [0.4, 0.1, 0.0, 0.0, 0.0, 0.0],
+    [0.1, 0.3, 0.0, 0.0, 0.1, 0.0],
+    [0.0, 0.0, 0.3, 0.1, 0.0, 0.0],
+    [0.0, 0.0, 0.1, 0.3, 0.0, 0.0],
+    [0.0, 0.1, 0.0, 0.0, 0.3, 0.0],
+    [0.1, 0.0, 0.0, 0.0, 0.0, 0.3]
+])
+
+# Leaders in each group
+leaders = [0, 2]
+alpha = 2.0
+
+# Leader-amplified matrix
+A_lead = A.copy()
+for ln in leaders:
+    A_lead[:, ln] *= alpha
+
+# Emotional sensitivity operator (saturating)
+def Psi(x, signal):
+    return 0.5 * (x + np.tanh(signal))
+
+# Group resonance operator
+def Gamma(x_i, sum_signal, node_i, groups, beta_dict):
+    g = groups[node_i]
+    return beta_dict[g] * Psi(x_i, sum_signal)
+
+# Resonance factors
+beta_dict = {1: 1.8, 2: 1.8}
+
+# Time evolution
+T = 20
+x = np.zeros((T+1, n))
+x[0] = np.random.rand(n) * 0.1  # small random start
+
+# Each leader broadcasts the same repeated signal intensity = 2.0
+u_leader = {0: 2.0, 2: 2.0}
+
+for t in range(T):
+    # 1) Diffusion step
+    x_diff = A_lead @ x[t]
+    
+    # 2) Emotional "push" from repeated signals
+    x_emotion = np.zeros(n)
+    for i in range(n):
+        # approximate the repeated signal as (t+1) * intensity from each leader
+        sum_signal = 0.0
+        for ln, intensity in u_leader.items():
+            sum_signal += (t+1) * intensity
+        
+        # Apply group resonance
+        x_emotion[i] = Gamma(x[t][i], sum_signal, i, groups, beta_dict)
+    
+    x[t+1] = x_diff + x_emotion
+
+print("Final emotional states after repeated signals:")
+print(x[-1])
+</code></pre>
+
+  <p>
+    By varying \(\alpha\), \(\beta_p\), or each leader’s broadcast intensity, you may see the system converge to a
+    <em>low</em> emotional state or a <em>high</em> emotional state—sometimes flipping abruptly if both leaders
+    coordinate sufficiently.
+  </p>
+
+  <hr />
+
+  <h2>7. Big-Picture Implications</h2>
+
+  <p>
+    So why does any of this matter from a broader standpoint?
+  </p>
+
+  <ul>
+    <li><strong>Leaders and echo chambers</strong> create conditions where purely informational strategies (zero
+      violence) can have outsized effects.</li>
+    <li><strong>Multiple equilibria</strong> and sudden “tips” challenge simplistic, linear predictions of how opinions
+      evolve.</li>
+    <li><strong>Ethical dilemmas</strong>: Coordinating leaders or influencers could shift an entire network’s emotional
+      baseline without violence, raising questions about the responsible use (or misuse) of such tactics.</li>
+  </ul>
+
+  <p>
+    Non-violent propaganda becomes <em>even subtler</em> under these conditions. Repeated signals, amplified by leaders
+    and reinforced by in-group resonance, can drive large-scale shifts in collective mindsets.
+  </p>
+
+  <hr />
+
+  <h2>8. Conclusion and Future Directions</h2>
+
+  <p>
+    By weaving <strong>leaders</strong> and <strong>in-groups</strong> into our original framework, we uncover:
+  </p>
+  <ol>
+    <li><strong>Amplified influence</strong> from leader nodes can bias social dynamics.</li>
+    <li><strong>Echo chambers</strong> can exhibit multiple stable equilibria or abrupt flips.</li>
+    <li><strong>Coordinated non-violent signals</strong> can “tip” entire networks unexpectedly.</li>
+  </ol>
+
+  <p>
+    Future avenues include exploring <em>competing propaganda</em> (multiple factions trying to influence the same
+    network), <em>stochastic signals</em> (where leaders vary their intensity unpredictably), or even <em>switching
+      group identities</em> over time (as individuals move across social boundaries).
+  </p>
+
+  <p>
+    Ultimately, understanding these dynamics is key to recognizing—and potentially mitigating—<strong>the potency of
+      non-violent propaganda</strong> when wielded by influential leaders within tightly knit communities.
+  </p>
+
+
+</body>
+
+</html>
